@@ -11,6 +11,7 @@ app.use(express.json());
 app.use('/articles', require('./routes/articles'));
 app.use('/events', require('./routes/events'));
 app.use('/playbooks', require('./routes/playbooks'));
+app.use('/magazines', require('./routes/magazines'));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
       articles: '/articles',
       events: '/events',
       playbooks: '/playbooks',
+      magazines: '/magazines',
       health: '/health',
     },
   });
@@ -37,11 +39,14 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 CXO TechBOT Backend running on http://localhost:${PORT}`);
   console.log(`📡 API Documentation:`);
-  console.log(`   GET  /articles?category=ai&page=1&limit=10`);
+  console.log(`   GET  /articles?category=ai&page=1&limit=4`);
   console.log(`   GET  /articles/categories`);
   console.log(`   GET  /events?type=masterclass`);
   console.log(`   GET  /playbooks?q=startup`);
+  console.log(`   GET  /magazines?category=flagship`);
+  console.log(`   GET  /magazines/categories`);
   console.log(`   POST /articles/:id/click`);
   console.log(`   POST /events/:id/register`);
   console.log(`   POST /playbooks/:id/download`);
+  console.log(`   POST /magazines/:id/download`);
 });
