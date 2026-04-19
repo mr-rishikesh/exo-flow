@@ -1,0 +1,22 @@
+{
+  "name": "cxo-techbot-backend",
+  "version": "1.0.0",
+  "description": "Production-ready backend for CXO TechBOT chatbot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "chatbot",
+    "engati",
+    "api",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

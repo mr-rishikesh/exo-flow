@@ -1,0 +1,114 @@
+[
+  {
+    "id": "pb-001",
+    "category": "ai",
+    "subcategory": "genai",
+    "title": "AI & GenAI Playbook",
+    "description": "Comprehensive guide to implementing generative AI in your organization.",
+    "pages": 85,
+    "downloadUrl": "https://cxotechbot.com/playbooks/ai-genai-playbook.pdf",
+    "tags": [
+      "GenAI",
+      "Implementation",
+      "Strategy"
+    ],
+    "createdAt": "2026-02-01",
+    "downloads": 1200
+  },
+  {
+    "id": "pb-002",
+    "category": "startup",
+    "subcategory": "growth",
+    "title": "Startup Growth Guides",
+    "description": "Step-by-step playbooks for scaling your startup from early-stage to growth stage.",
+    "pages": 120,
+    "downloadUrl": "https://cxotechbot.com/playbooks/startup-growth-guides.pdf",
+    "tags": [
+      "Growth",
+      "Startup",
+      "Scaling"
+    ],
+    "createdAt": "2026-01-15",
+    "downloads": 980
+  },
+  {
+    "id": "pb-003",
+    "category": "leadership",
+    "subcategory": "cto",
+    "title": "CTO/Tech Leadership Handbook",
+    "description": "Essential handbook for technical leaders managing engineering organizations.",
+    "pages": 95,
+    "downloadUrl": "https://cxotechbot.com/playbooks/cto-handbook.pdf",
+    "tags": [
+      "Leadership",
+      "CTO",
+      "Management"
+    ],
+    "createdAt": "2026-01-20",
+    "downloads": 750
+  },
+  {
+    "id": "pb-004",
+    "category": "startup",
+    "subcategory": "funding",
+    "title": "Series A Fundraising Playbook",
+    "description": "Complete guide to raising Series A funding: from preparation to closing.",
+    "pages": 110,
+    "downloadUrl": "https://cxotechbot.com/playbooks/series-a-playbook.pdf",
+    "tags": [
+      "Fundraising",
+      "Series A",
+      "VC"
+    ],
+    "createdAt": "2026-02-10",
+    "downloads": 1100
+  },
+  {
+    "id": "pb-005",
+    "category": "product",
+    "subcategory": "design",
+    "title": "Product Management Playbook",
+    "description": "Modern product management frameworks and best practices.",
+    "pages": 100,
+    "downloadUrl": "https://cxotechbot.com/playbooks/product-management.pdf",
+    "tags": [
+      "Product",
+      "Management",
+      "Strategy"
+    ],
+    "createdAt": "2026-02-05",
+    "downloads": 890
+  },
+  {
+    "id": "pb-006",
+    "category": "leadership",
+    "subcategory": "culture",
+    "title": "Building Inclusive Tech Teams",
+    "description": "Playbook for creating diverse, inclusive, and high-performing teams.",
+    "pages": 75,
+    "downloadUrl": "https://cxotechbot.com/playbooks/inclusive-teams.pdf",
+    "tags": [
+      "Culture",
+      "Diversity",
+      "Leadership"
+    ],
+    "createdAt": "2026-03-01",
+    "downloads": 640
+  },
+  {
+    "id": "pb-007",
+    "category": "ai",
+    "subcategory": "mlops",
+    "title": "MLOps Best Practices Guide",
+    "description": "Comprehensive guide to machine learning operations and infrastructure.",
+    "pages": 130,
+    "downloadUrl": "https://cxotechbot.com/playbooks/mlops-guide.pdf",
+    "tags": [
+      "MLOps",
+      "Infrastructure",
+      "Engineering"
+    ],
+    "createdAt": "2026-01-25",
+    "downloads": 520
+  }
+]

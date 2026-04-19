@@ -1,0 +1,152 @@
+[
+  {
+    "id": "art-001",
+    "category": "ai",
+    "subcategory": "genai",
+    "title": "The Rise of Generative AI in Business: A CEO's Guide",
+    "summary": "How enterprise leaders are leveraging GenAI to transform operations and drive competitive advantage.",
+    "url": "https://cxotechbot.com/blog/genai-ceo-guide",
+    "tags": [
+      "GenAI",
+      "Leadership",
+      "Enterprise"
+    ],
+    "createdAt": "2026-04-15",
+    "clicks": 450
+  },
+  {
+    "id": "art-002",
+    "category": "ai",
+    "subcategory": "genai",
+    "title": "Implementing ChatGPT in Enterprise: Best Practices",
+    "summary": "Proven strategies for integrating AI chatbots into your organization without disruption.",
+    "url": "https://cxotechbot.com/blog/chatgpt-enterprise",
+    "tags": [
+      "ChatGPT",
+      "Implementation",
+      "Strategy"
+    ],
+    "createdAt": "2026-04-12",
+    "clicks": 320
+  },
+  {
+    "id": "art-003",
+    "category": "ai",
+    "subcategory": "mlops",
+    "title": "MLOps Infrastructure: Building ML-First Companies",
+    "summary": "Deep dive into machine learning operations and infrastructure best practices.",
+    "url": "https://cxotechbot.com/blog/mlops-infrastructure",
+    "tags": [
+      "MLOps",
+      "Infrastructure",
+      "DevOps"
+    ],
+    "createdAt": "2026-04-10",
+    "clicks": 280
+  },
+  {
+    "id": "art-004",
+    "category": "startup",
+    "subcategory": "funding",
+    "title": "Series A Playbook: What VCs Actually Look For",
+    "summary": "Insider perspective on what venture capitalists evaluate during Series A funding rounds.",
+    "url": "https://cxotechbot.com/blog/series-a-playbook",
+    "tags": [
+      "Fundraising",
+      "Series A",
+      "VC"
+    ],
+    "createdAt": "2026-04-14",
+    "clicks": 520
+  },
+  {
+    "id": "art-005",
+    "category": "startup",
+    "subcategory": "funding",
+    "title": "Pre-Seed Fundraising: Essential Guide for Founders",
+    "summary": "Everything you need to know about raising your first seed round.",
+    "url": "https://cxotechbot.com/blog/preseed-guide",
+    "tags": [
+      "Fundraising",
+      "Pre-Seed",
+      "Founder"
+    ],
+    "createdAt": "2026-04-11",
+    "clicks": 380
+  },
+  {
+    "id": "art-006",
+    "category": "startup",
+    "subcategory": "growth",
+    "title": "Product-Market Fit: How to Know When You Have It",
+    "summary": "Clear signals and metrics that indicate you've achieved product-market fit.",
+    "url": "https://cxotechbot.com/blog/pmf-signals",
+    "tags": [
+      "PMF",
+      "Growth",
+      "Product"
+    ],
+    "createdAt": "2026-04-09",
+    "clicks": 410
+  },
+  {
+    "id": "art-007",
+    "category": "product",
+    "subcategory": "design",
+    "title": "Modern Product Management: From Discovery to Launch",
+    "summary": "A comprehensive guide to modern product management practices and methodologies.",
+    "url": "https://cxotechbot.com/blog/product-management-guide",
+    "tags": [
+      "Product Management",
+      "Design",
+      "Strategy"
+    ],
+    "createdAt": "2026-04-13",
+    "clicks": 340
+  },
+  {
+    "id": "art-008",
+    "category": "product",
+    "subcategory": "engineering",
+    "title": "Building Scalable Architectures: Lessons from Scale-ups",
+    "summary": "Technical insights from companies that scaled from 0 to millions of users.",
+    "url": "https://cxotechbot.com/blog/scalable-architecture",
+    "tags": [
+      "Architecture",
+      "Scaling",
+      "Engineering"
+    ],
+    "createdAt": "2026-04-08",
+    "clicks": 290
+  },
+  {
+    "id": "art-009",
+    "category": "leadership",
+    "subcategory": "cto",
+    "title": "The CTO's Role in Modern Tech Organizations",
+    "summary": "Evolving responsibilities of CTOs and how to lead technical teams effectively.",
+    "url": "https://cxotechbot.com/blog/cto-leadership",
+    "tags": [
+      "Leadership",
+      "CTO",
+      "Management"
+    ],
+    "createdAt": "2026-04-07",
+    "clicks": 360
+  },
+  {
+    "id": "art-010",
+    "category": "leadership",
+    "subcategory": "culture",
+    "title": "Building High-Performance Tech Teams",
+    "summary": "Strategies for recruiting, retaining, and developing world-class engineering teams.",
+    "url": "https://cxotechbot.com/blog/tech-teams",
+    "tags": [
+      "Leadership",
+      "Culture",
+      "Recruitment"
+    ],
+    "createdAt": "2026-04-06",
+    "clicks": 490
+  }
+]

@@ -1,0 +1,133 @@
+[
+  {
+    "id": "evt-001",
+    "type": "masterclass",
+    "category": "ai",
+    "title": "GenAI for Business Leaders",
+    "description": "Learn how to leverage generative AI in your organization with expert insights.",
+    "speaker": "Dr. Sarah Chen",
+    "date": "2026-03-28",
+    "time": "3:00 PM IST",
+    "duration": "90 minutes",
+    "url": "https://cxotechbot.com/events/genai-masterclass",
+    "tags": [
+      "GenAI",
+      "Leadership",
+      "Masterclass"
+    ],
+    "registrations": 450,
+    "createdAt": "2026-02-15"
+  },
+  {
+    "id": "evt-002",
+    "type": "masterclass",
+    "category": "startup",
+    "title": "Scaling Startups: 0 to Series A",
+    "description": "A step-by-step guide to scaling your startup from idea to Series A funding.",
+    "speaker": "Rajesh Kumar",
+    "date": "2026-04-04",
+    "time": "2:00 PM IST",
+    "duration": "90 minutes",
+    "url": "https://cxotechbot.com/events/scaling-startups",
+    "tags": [
+      "Startup",
+      "Scaling",
+      "Fundraising"
+    ],
+    "registrations": 380,
+    "createdAt": "2026-02-15"
+  },
+  {
+    "id": "evt-003",
+    "type": "masterclass",
+    "category": "leadership",
+    "title": "Building High-Performing Tech Teams",
+    "description": "Proven frameworks for building and managing world-class engineering teams.",
+    "speaker": "Priya Sharma",
+    "date": "2026-04-10",
+    "time": "4:00 PM IST",
+    "duration": "90 minutes",
+    "url": "https://cxotechbot.com/events/tech-teams-masterclass",
+    "tags": [
+      "Leadership",
+      "Team Building",
+      "Management"
+    ],
+    "registrations": 320,
+    "createdAt": "2026-02-15"
+  },
+  {
+    "id": "evt-004",
+    "type": "masterclass",
+    "category": "product",
+    "title": "Product Strategy & Innovation",
+    "description": "Modern product strategy frameworks from successful tech leaders.",
+    "speaker": "Aniruddh Roy",
+    "date": "2026-04-18",
+    "time": "5:00 PM IST",
+    "duration": "90 minutes",
+    "url": "https://cxotechbot.com/events/product-strategy",
+    "tags": [
+      "Product",
+      "Strategy",
+      "Innovation"
+    ],
+    "registrations": 290,
+    "createdAt": "2026-02-15"
+  },
+  {
+    "id": "evt-005",
+    "type": "summit",
+    "category": "general",
+    "title": "CXO Tech Summit Q2 2026",
+    "description": "The largest gathering of tech leaders, founders, and innovators in India.",
+    "location": "Bangalore",
+    "date": "2026-04-15",
+    "endDate": "2026-04-16",
+    "url": "https://cxotechbot.com/events/q2-summit",
+    "tags": [
+      "Summit",
+      "Networking",
+      "Conference"
+    ],
+    "registrations": 850,
+    "createdAt": "2026-01-15"
+  },
+  {
+    "id": "evt-006",
+    "type": "webinar",
+    "category": "ai",
+    "title": "AI Ethics and Responsible Innovation",
+    "description": "Webinar on building AI systems responsibly and ethically.",
+    "speaker": "Dr. Ananya Patel",
+    "date": "2026-04-20",
+    "time": "6:00 PM IST",
+    "duration": "60 minutes",
+    "url": "https://cxotechbot.com/events/ai-ethics-webinar",
+    "tags": [
+      "AI",
+      "Ethics",
+      "Webinar"
+    ],
+    "registrations": 210,
+    "createdAt": "2026-03-10"
+  },
+  {
+    "id": "evt-007",
+    "type": "roundtable",
+    "category": "startup",
+    "title": "Founder Roundtable: Lessons from Failures",
+    "description": "Intimate roundtable discussion with founders about their biggest challenges and learnings.",
+    "date": "2026-04-22",
+    "time": "7:00 PM IST",
+    "location": "Mumbai",
+    "url": "https://cxotechbot.com/events/founder-roundtable",
+    "tags": [
+      "Startup",
+      "Roundtable",
+      "Networking"
+    ],
+    "registrations": 85,
+    "createdAt": "2026-03-05"
+  }
+]
