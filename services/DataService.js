@@ -7,6 +7,7 @@ class DataService {
     this.eventsPath = path.join(__dirname, '../data/events.json');
     this.playbooksPath = path.join(__dirname, '../data/playbooks.json');
     this.magazinesPath = path.join(__dirname, '../data/magazines.json');
+    this.masterclassesPath = path.join(__dirname, '../data/masterclasses.json');
     this.analyticsPath = path.join(__dirname, '../data/analytics.json');
     this.loadData();
   }
@@ -16,6 +17,7 @@ class DataService {
     this.events = this.readJsonFile(this.eventsPath);
     this.playbooks = this.readJsonFile(this.playbooksPath);
     this.magazines = this.readJsonFile(this.magazinesPath);
+    this.masterclasses = this.readJsonFile(this.masterclassesPath);
     this.analytics = this.readJsonFile(this.analyticsPath) || {};
   }
 
@@ -51,6 +53,10 @@ class DataService {
 
   getMagazines() {
     return this.magazines;
+  }
+
+  getMasterclasses() {
+    return this.masterclasses;
   }
 
   recordClick(type, id) {

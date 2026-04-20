@@ -12,6 +12,7 @@ app.use('/articles', require('./routes/articles'));
 app.use('/events', require('./routes/events'));
 app.use('/playbooks', require('./routes/playbooks'));
 app.use('/magazines', require('./routes/magazines'));
+app.use('/masterclasses', require('./routes/masterclasses'));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
       events: '/events',
       playbooks: '/playbooks',
       magazines: '/magazines',
+      masterclasses: '/masterclasses',
       health: '/health',
     },
   });
@@ -45,8 +47,11 @@ app.listen(PORT, () => {
   console.log(`   GET  /playbooks?q=startup`);
   console.log(`   GET  /magazines?category=flagship`);
   console.log(`   GET  /magazines/categories`);
+  console.log(`   GET  /masterclasses?category=ai`);
+  console.log(`   GET  /masterclasses/categories`);
   console.log(`   POST /articles/:id/click`);
   console.log(`   POST /events/:id/register`);
   console.log(`   POST /playbooks/:id/download`);
   console.log(`   POST /magazines/:id/download`);
+  console.log(`   POST /masterclasses/:id/enroll`);
 });
