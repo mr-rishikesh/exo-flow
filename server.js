@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +13,6 @@ app.use('/events', require('./routes/events'));
 app.use('/playbooks', require('./routes/playbooks'));
 app.use('/magazines', require('./routes/magazines'));
 app.use('/masterclasses', require('./routes/masterclasses'));
-app.use('/leads', require('./routes/leads'));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -30,7 +28,6 @@ app.get('/', (req, res) => {
       playbooks: '/playbooks',
       magazines: '/magazines',
       masterclasses: '/masterclasses',
-      leads: '/leads',
       health: '/health',
     },
   });
@@ -50,13 +47,5 @@ app.listen(PORT, () => {
   console.log(`   GET  /playbooks?q=startup`);
   console.log(`   GET  /magazines?category=flagship`);
   console.log(`   GET  /masterclasses?category=ai`);
-  console.log(`\n📝 LEAD CAPTURE ENDPOINTS:`);
-  console.log(`   POST /leads/newsletter-subscribe`);
-  console.log(`   POST /leads/magazine-download`);
-  console.log(`   POST /leads/get-featured`);
-  console.log(`   POST /leads/masterclass-register`);
-  console.log(`   POST /leads/event-register`);
-  console.log(`   POST /leads/playbook-access`);
-  console.log(`   POST /leads/general`);
-  console.log(`\n💾 DATA STORED IN: Google Sheets`);
+  console.log(`\n💾 DATA STORED IN: JSON Files`);
 });

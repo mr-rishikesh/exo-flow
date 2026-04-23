@@ -1,5 +1,9 @@
 {
-  "articles": {},
-  "events": {},
+  "articles": {
+    "art-001": 1
+  },
+  "events": {
+    "evt-001": 1
+  },
   "playbooks": {}
 }

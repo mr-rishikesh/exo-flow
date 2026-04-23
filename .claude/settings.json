@@ -3,7 +3,29 @@
     "allow": [
       "Bash(cat)",
       "Read(//tmp/**)",
-      "WebFetch(domain:www.cxotechbot.com)"
+      "WebFetch(domain:www.cxotechbot.com)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s http://localhost:3000/magazines)",
+      "Bash(curl -s http://localhost:3000/playbooks)",
+      "Bash(curl -s http://localhost:3000/masterclasses)",
+      "Bash(curl -s http://localhost:3000/health)",
+      "Bash(awk '{print $2}')",
+      "Bash(xargs kill *)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
+      "Bash(curl -s http://localhost:3000/articles)",
+      "Bash(curl -s http://localhost:3000/events)",
+      "Bash(curl -s \"http://localhost:3000/magazines?category=health-techbot\")",
+      "Bash(curl -s -X POST http://localhost:3000/articles/art-001/click)",
+      "Bash(curl -s -X POST http://localhost:3000/events/evt-001/register)",
+      "Bash(curl -s \"http://localhost:3000/articles?category=ai\")",
+      "Bash(curl -s \"http://localhost:3000/articles?page=2&limit=2\")",
+      "Bash(curl -s \"http://localhost:3000/articles?sort=trending\")",
+      "Bash(curl -s \"http://localhost:3000/events?type=masterclass\")",
+      "Bash(curl -s \"http://localhost:3000/magazines/categories\")",
+      "Bash(curl -s \"http://localhost:3000/playbooks/pb-001\")",
+      "Bash(curl -s \"http://localhost:3000/masterclasses/categories\")",
+      "Bash(curl -s http://localhost:3000/articles?limit=100)",
+      "Bash(echo \"  Articles: $\\(curl -s http://localhost:3000/articles?limit=100)"
     ]
   }
 }
