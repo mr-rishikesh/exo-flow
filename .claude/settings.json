@@ -25,7 +25,10 @@
       "Bash(curl -s \"http://localhost:3000/playbooks/pb-001\")",
       "Bash(curl -s \"http://localhost:3000/masterclasses/categories\")",
       "Bash(curl -s http://localhost:3000/articles?limit=100)",
-      "Bash(echo \"  Articles: $\\(curl -s http://localhost:3000/articles?limit=100)"
+      "Bash(echo \"  Articles: $\\(curl -s http://localhost:3000/articles?limit=100)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3; netstat -ano | findstr :3000 | ForEach-Object { $pid = \\($_ -split '\\\\s+'\\)[-1]; taskkill /PID $pid /F } 2>$null; Start-Sleep -Seconds 2)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 3; $pids = \\(netstat -ano | findstr :3000 | ForEach-Object { \\($_ -split '\\\\s+'\\)[-1] }\\); if \\($pids\\) { $pids | ForEach-Object { taskkill /PID $_ /F 2>$null } }; Start-Sleep -Seconds 2; \"Port check:\"; netstat -ano | findstr :3000 | wc -l)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 3; $pids = \\(netstat -ano | findstr :3000 | ForEach-Object { \\($_ -split '\\\\s+'\\)[-1] }\\); if \\($pids\\) { $pids | ForEach-Object { taskkill /PID $_ /F 2>$null } }; Start-Sleep -Seconds 3; cd \"C:\\\\AI LifeBot\\\\cxo-bot-cms-backend\"; npm start 2>&1 | head -20)"
     ]
   }
 }

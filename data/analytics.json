@@ -1,9 +1,9 @@
 {
   "articles": {
-    "art-001": 1
+    "art-001": 2
   },
   "events": {
-    "evt-001": 1
+    "evt-001": 2
   },
   "playbooks": {}
 }
