@@ -42,7 +42,13 @@
       "Bash(curl -s -i http://localhost:3000/admin/events/new)",
       "Bash(curl -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\"}')",
       "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"newsletter@example.com\"}')",
-      "Bash(curl -s http://localhost:3000/newsletter)"
+      "Bash(curl -s http://localhost:3000/newsletter)",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"test.newsletter@example.com\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"newuser@example.com\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/unsubscribe -H 'Content-Type: application/json' -d '{\"email\":\"newuser@example.com\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"another@example.com\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{}')"
     ],
     "additionalDirectories": [
       "\\tmp"
