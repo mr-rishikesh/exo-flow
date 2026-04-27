@@ -37,6 +37,7 @@ app.use('/playbooks', require('./routes/playbooks'));
 app.use('/magazines', require('./routes/magazines'));
 app.use('/masterclasses', require('./routes/masterclasses'));
 app.use('/leads', require('./routes/leads'));
+app.use('/newsletter', require('./routes/newsletter'));
 app.use('/admin', require('./routes/admin'));
 
 app.get('/health', (req, res) => {
@@ -75,6 +76,10 @@ app.listen(PORT, () => {
   console.log(`\n📝 LEAD CAPTURE:`);
   console.log(`   POST /leads (from Engati chatbot)`);
   console.log(`   GET  /leads (list all leads)`);
+  console.log(`\n📧 NEWSLETTER:`);
+  console.log(`   POST /newsletter/subscribe (email only)`);
+  console.log(`   POST /newsletter/unsubscribe (email only)`);
+  console.log(`   GET  /newsletter (list subscribers - admin)`);
   console.log(`\n🔐 ADMIN PANEL:`);
   console.log(`   GET  http://localhost:${PORT}/admin/login`);
   console.log(`   GET  http://localhost:${PORT}/admin/leads`);

@@ -39,7 +39,13 @@
       "Bash(node -e \"const DataService = require\\('./services/DataService'\\); console.log\\('Magazines loaded:', DataService.getMagazines\\(\\).length\\);\")",
       "Bash(curl -s -i http://localhost:3000/admin/magazines)",
       "Bash(curl -s http://localhost:3000/admin/events/new)",
-      "Bash(curl -s -i http://localhost:3000/admin/events/new)"
+      "Bash(curl -s -i http://localhost:3000/admin/events/new)",
+      "Bash(curl -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"newsletter@example.com\"}')",
+      "Bash(curl -s http://localhost:3000/newsletter)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
     ]
   }
 }
