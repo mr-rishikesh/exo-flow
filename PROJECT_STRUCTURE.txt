@@ -1,0 +1,163 @@
+CXO TECHBOT BACKEND - EXTENDED PROJECT STRUCTURE
+================================================
+
+cxo-bot-cms-backend/
+│
+├── 📁 models/                          (NEW - Database)
+│   └── Lead.js                         MongoDB lead schema with full CRUD
+│
+├── 📁 controllers/                     (Business Logic)
+│   ├── articleController.js            Existing - Article operations
+│   ├── eventController.js              Existing - Event operations
+│   ├── playbookController.js           Existing - Playbook operations
+│   ├── magazineController.js           Existing - Magazine operations
+│   ├── masterclassController.js        Existing - Masterclass operations
+│   ├── leadController.js               (NEW) Lead CRUD operations
+│   └── adminController.js              (NEW) Admin panel logic
+│
+├── 📁 routes/                          (API Endpoints)
+│   ├── articles.js                     Existing - GET /articles
+│   ├── events.js                       Existing - GET /events
+│   ├── playbooks.js                    Existing - GET /playbooks
+│   ├── magazines.js                    Existing - GET /magazines
+│   ├── masterclasses.js                Existing - GET /masterclasses
+│   ├── leads.js                        (NEW) POST/GET /leads
+│   └── admin.js                        (NEW) /admin/* routes
+│
+├── 📁 services/                        (Utilities & Business Logic)
+│   ├── DataService.js                  (MODIFIED) JSON file management + new save methods
+│   ├── FilterService.js                Existing - Filtering & pagination
+│   └── NotificationService.js          (NEW) Email & Telegram alerts
+│
+├── 📁 middleware/                      (NEW - Request Processing)
+│   └── authMiddleware.js               Session-based authentication
+│
+├── 📁 views/                           (NEW - Admin UI Templates)
+│   └── admin/
+│       ├── login.ejs                   Login page
+│       ├── leads.ejs                   Leads dashboard
+│       ├── edit-lead.ejs               Edit lead form
+│       ├── articles.ejs                Articles list
+│       ├── new-article.ejs             Add article form
+│       └── edit-article.ejs            Edit article form
+│
+├── 📁 data/                            (Existing - JSON Data)
+│   ├── articles.json
+│   ├── events.json
+│   ├── playbooks.json
+│   ├── magazines.json
+│   ├── masterclasses.json
+│   └── analytics.json
+│
+├── 📁 node_modules/                    (Dependencies - auto generated)
+│
+├── 📄 server.js                        (MODIFIED) Main Express app
+│   ├─ Added MongoDB connection
+│   ├─ Added EJS view engine
+│   ├─ Added session middleware
+│   ├─ Added /leads route
+│   ├─ Added /admin route
+│   └─ Updated startup message
+│
+├── 📄 package.json                     (MODIFIED) Dependencies
+│   Added:
+│   ├─ mongoose ^7.5.0
+│   ├─ ejs ^3.1.9
+│   ├─ express-session ^1.17.3
+│   ├─ bcryptjs ^2.4.3
+│   ├─ nodemailer ^6.9.7
+│   └─ dotenv ^16.3.1
+│
+├── 📄 .env                             (NEW) Configuration
+│   ├─ PORT, NODE_ENV
+│   ├─ MONGO_URI
+│   ├─ ADMIN_EMAIL, ADMIN_PASSWORD
+│   ├─ EMAIL_USER, EMAIL_PASS
+│   ├─ TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+│   └─ SESSION_SECRET
+│
+├── 📄 .gitignore                       (Existing)
+│
+├── 📚 Documentation Files (NEW):
+│   ├── QUICK_START.md                  5-minute quick reference
+│   ├── SETUP.md                        Complete setup guide
+│   ├── EXTENSION_SUMMARY.md            Technical architecture
+│   ├── NEXT_STEPS.md                   Deployment guide
+│   ├── IMPLEMENTATION_CHECKLIST.md     Verification checklist
+│   ├── FINAL_SUMMARY.md                Project overview
+│   └── PROJECT_STRUCTURE.txt           This file
+
+SUMMARY
+=======
+NEW FILES:        16 (1 model, 1 controller, 1 route, 1 service, 1 middleware, 6 views, 6 docs)
+MODIFIED FILES:   3 (server.js, package.json, DataService.js)
+DEPENDENCIES:     6 new packages installed
+TOTAL LINES:      ~3000+ new code & documentation
+
+KEY FEATURES ADDED
+==================
+✅ Lead Management (MongoDB)
+✅ Admin Authentication
+✅ Admin Panel with UI
+✅ Email Notifications
+✅ Telegram Alerts
+✅ Article Management
+✅ Complete Documentation
+✅ 100% Backward Compatible
+
+ALL EXISTING APIS UNTOUCHED
+===========================
+/articles        ✅ Still works
+/events          ✅ Still works
+/playbooks       ✅ Still works
+/magazines       ✅ Still works
+/masterclasses   ✅ Still works
+/health          ✅ Still works
+
+NEW ENDPOINTS
+=============
+POST   /leads                 Create lead (from chatbot)
+GET    /leads                 List all leads
+GET    /admin/login           Admin login page
+GET    /admin/leads           Leads dashboard
+GET    /admin/articles        Articles management
+POST   /admin/articles/create Add new article
+... + more admin routes (see FINAL_SUMMARY.md)
+
+QUICK START
+===========
+1. npm install
+2. mongod (start MongoDB)
+3. npm start
+4. http://localhost:3000/admin/login
+
+Default Credentials:
+  Email: admin@cxotechbot.com
+  Password: Admin@123
+
+ARCHITECTURE
+============
+              ┌────────────────────┐
+              │  Engati Chatbot    │
+              └─────────┬──────────┘
+                        │
+                ┌───────┴────────┐
+                ↓                ↓
+          POST /leads       GET /articles
+          POST /leads       GET /events
+                        ... (other content APIs)
+                │                │
+                ↓                ↓
+        ┌───────────────┐   ┌──────────────┐
+        │   MongoDB     │   │  JSON Files  │
+        │  (Leads DB)   │   │ (Content DB) │
+        └───────┬───────┘   └──────────────┘
+                │
+                ↓
+        ┌────────────────┐
+        │ Admin Panel    │
+        │ /admin/leads   │
+        │ /admin/articles│
+        └────────────────┘
+
+For complete details, see FINAL_SUMMARY.md
