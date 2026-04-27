@@ -1,14 +1,15 @@
 const Lead = require('../models/Lead');
 
-// Subscribe to newsletter - only requires email
+// Subscribe to newsletter - accepts email from body, query, or URL parameters
 exports.subscribeNewsletter = async (req, res) => {
   try {
-    const { email } = req.body;
+    // Accept email from request body, query parameters, or URL path
+    const email = req.body.email || req.query.email || req.params.email;
 
     if (!email) {
       return res.status(400).json({
         success: false,
-        error: 'Email is required',
+        error: 'Email is required. Provide as: /subscribe/:email or /subscribe?email=user@example.com or in request body',
       });
     }
 
@@ -77,12 +78,13 @@ exports.getNewsletterSubscribers = async (req, res) => {
 // Unsubscribe from newsletter by email
 exports.unsubscribeNewsletter = async (req, res) => {
   try {
-    const { email } = req.body;
+    // Accept email from request body, query parameters, or URL path
+    const email = req.body.email || req.query.email || req.params.email;
 
     if (!email) {
       return res.status(400).json({
         success: false,
-        error: 'Email is required',
+        error: 'Email is required. Provide as: /unsubscribe/:email or /unsubscribe?email=user@example.com or in request body',
       });
     }
 

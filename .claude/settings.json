@@ -48,7 +48,19 @@
       "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"newuser@example.com\"}')",
       "Bash(curl -s -X POST http://localhost:3000/newsletter/unsubscribe -H 'Content-Type: application/json' -d '{\"email\":\"newuser@example.com\"}')",
       "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"another@example.com\"}')",
-      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{}')"
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{}')",
+      "Bash(curl -s 'http://localhost:3000/newsletter/subscribe?email=querytest@example.com' -X POST)",
+      "Bash(curl -s 'http://localhost:3000/newsletter/unsubscribe?email=querytest@example.com' -X POST)",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"bodytest@example.com\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe)",
+      "Bash(curl -s 'http://localhost:3000/newsletter/subscribe?email=param__CMDSUB_OUTPUT__@example.com' -X POST)",
+      "Bash(curl -s 'http://localhost:3000/newsletter/subscribe?email=paramtest2@example.com' -X POST)",
+      "Bash(curl -s -X POST \"http://localhost:3000/newsletter/subscribe/urlpath@example.com\")",
+      "Bash(curl -s -X POST \"http://localhost:3000/newsletter/subscribe?email=queryparam@example.com\")",
+      "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"body@example.com\"}')",
+      "Bash(curl -s -X POST \"http://localhost:3000/newsletter/unsubscribe/urlpath@example.com\")",
+      "Bash(curl -s -X POST \"http://localhost:3000/newsletter/unsubscribe?email=queryparam@example.com\")",
+      "Bash(curl -s \"http://localhost:3000/newsletter/subscribe/getrequest@example.com\")"
     ],
     "additionalDirectories": [
       "\\tmp"
