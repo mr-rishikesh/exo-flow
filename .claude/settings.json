@@ -60,7 +60,13 @@
       "Bash(curl -s -X POST http://localhost:3000/newsletter/subscribe -H 'Content-Type: application/json' -d '{\"email\":\"body@example.com\"}')",
       "Bash(curl -s -X POST \"http://localhost:3000/newsletter/unsubscribe/urlpath@example.com\")",
       "Bash(curl -s -X POST \"http://localhost:3000/newsletter/unsubscribe?email=queryparam@example.com\")",
-      "Bash(curl -s \"http://localhost:3000/newsletter/subscribe/getrequest@example.com\")"
+      "Bash(curl -s \"http://localhost:3000/newsletter/subscribe/getrequest@example.com\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "Bash(curl -s -X POST http://localhost:3000/playbook-subscription/subscribe -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(curl -s -X POST \"http://localhost:3000/playbook-subscription/subscribe?user_fullName=Jane%20Smith&user_email=jane@example.com&user_companey_name=Innovation%20Inc&user_role=Developer\")",
+      "Bash(curl -s http://localhost:3000/playbook-subscription/)",
+      "Bash(curl -s -X POST \"http://localhost:3000/playbook-subscription/unsubscribe/john@example.com\")",
+      "Bash(curl -s -X POST http://localhost:3000/playbook-subscription/subscribe -H 'Content-Type: application/json' -d '{\"user_fullName\":\"Test\"}')"
     ],
     "additionalDirectories": [
       "\\tmp"

@@ -33,6 +33,7 @@ const leadSchema = new mongoose.Schema(
         'media_inquiry',
         'general_inquiry',
         'newsletter',
+        'playbook_subscription',
         'other'
       ],
       default: 'general_inquiry',
