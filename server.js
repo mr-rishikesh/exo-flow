@@ -40,6 +40,8 @@ app.use('/leads', require('./routes/leads'));
 app.use('/newsletter', require('./routes/newsletter'));
 app.use('/playbook-subscription', require('./routes/playbookSubscription'));
 app.use('/masterclass-subscription', require('./routes/masterclassSubscription'));
+app.use('/event-registration', require('./routes/eventRegistration'));
+app.use('/brand-collaboration', require('./routes/brandCollaboration'));
 app.use('/get-featured', require('./routes/getFeature'));
 app.use('/magazine-email', require('./routes/magazineEmail'));
 app.use('/admin', require('./routes/admin'));

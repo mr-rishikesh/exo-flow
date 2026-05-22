@@ -38,6 +38,8 @@ const leadSchema = new mongoose.Schema(
         'role_change_announcement',
         'magazine_subscription',
         'masterclass_subscription',
+        'event_registration',
+        'brand_collaboration',
         'other'
       ],
       default: 'general_inquiry',
