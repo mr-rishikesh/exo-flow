@@ -35,6 +35,7 @@ const leadSchema = new mongoose.Schema(
         'newsletter',
         'playbook_subscription',
         'get_featured',
+        'role_change_announcement',
         'other'
       ],
       default: 'general_inquiry',

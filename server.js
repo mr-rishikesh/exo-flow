@@ -49,7 +49,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     name: 'CXO TechBOT Backend',
-    version: '1.0.4',
+    version: '1.0.5',
     endpoints: {
       articles: '/articles',
       events: '/events',
