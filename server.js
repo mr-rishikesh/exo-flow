@@ -39,7 +39,9 @@ app.use('/masterclasses', require('./routes/masterclasses'));
 app.use('/leads', require('./routes/leads'));
 app.use('/newsletter', require('./routes/newsletter'));
 app.use('/playbook-subscription', require('./routes/playbookSubscription'));
+app.use('/masterclass-subscription', require('./routes/masterclassSubscription'));
 app.use('/get-featured', require('./routes/getFeature'));
+app.use('/magazine-email', require('./routes/magazineEmail'));
 app.use('/admin', require('./routes/admin'));
 
 app.get('/health', (req, res) => {
@@ -49,7 +51,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     name: 'CXO TechBOT Backend',
-    version: '1.0.5',
+    version: '1.0.6',
     endpoints: {
       articles: '/articles',
       events: '/events',
