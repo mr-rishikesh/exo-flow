@@ -39,6 +39,7 @@ app.use('/masterclasses', require('./routes/masterclasses'));
 app.use('/leads', require('./routes/leads'));
 app.use('/newsletter', require('./routes/newsletter'));
 app.use('/playbook-subscription', require('./routes/playbookSubscription'));
+app.use('/get-featured', require('./routes/getFeature'));
 app.use('/admin', require('./routes/admin'));
 
 app.get('/health', (req, res) => {
