@@ -22,11 +22,20 @@ class DataService {
 
   async getArticleById(id) {
     try {
-      // First try by MongoDB _id, then by custom id field
-      let article = await Article.findById(id);
+      let article = null;
+
+      // First try by custom id field (for seeded data)
+      article = await Article.findOne({ id });
+
+      // If not found, try by MongoDB _id
       if (!article) {
-        article = await Article.findOne({ id });
+        try {
+          article = await Article.findById(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format, that's OK
+        }
       }
+
       return article ? article.toObject() : null;
     } catch (error) {
       console.error('Error fetching article:', error.message);
@@ -47,11 +56,18 @@ class DataService {
 
   async updateArticle(id, updateData) {
     try {
-      // First try by MongoDB _id, then by custom id field
-      let article = await Article.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by custom id field (for seeded data)
+      let article = await Article.findOneAndUpdate({ id }, updateData, { new: true });
+
+      // If not found, try by MongoDB _id
       if (!article) {
-        article = await Article.findOneAndUpdate({ id }, updateData, { new: true });
+        try {
+          article = await Article.findByIdAndUpdate(id, updateData, { new: true });
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return article ? article.toObject() : null;
     } catch (error) {
       console.error('Error updating article:', error.message);
@@ -61,11 +77,18 @@ class DataService {
 
   async deleteArticle(id) {
     try {
-      // First try by MongoDB _id, then by custom id field
-      let result = await Article.findByIdAndDelete(id);
+      // First try by custom id field (for seeded data)
+      let result = await Article.findOneAndDelete({ id });
+
+      // If not found, try by MongoDB _id
       if (!result) {
-        result = await Article.findOneAndDelete({ id });
+        try {
+          result = await Article.findByIdAndDelete(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return true;
     } catch (error) {
       console.error('Error deleting article:', error.message);
@@ -96,10 +119,20 @@ class DataService {
 
   async getEventById(id) {
     try {
-      let event = await Event.findById(id);
+      let event = null;
+
+      // First try by custom id field (for seeded data)
+      event = await Event.findOne({ id });
+
+      // If not found, try by MongoDB _id
       if (!event) {
-        event = await Event.findOne({ id });
+        try {
+          event = await Event.findById(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format, that's OK
+        }
       }
+
       return event ? event.toObject() : null;
     } catch (error) {
       console.error('Error fetching event:', error.message);
@@ -120,10 +153,18 @@ class DataService {
 
   async updateEvent(id, updateData) {
     try {
-      let event = await Event.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by custom id field (for seeded data)
+      let event = await Event.findOneAndUpdate({ id }, updateData, { new: true });
+
+      // If not found, try by MongoDB _id
       if (!event) {
-        event = await Event.findOneAndUpdate({ id }, updateData, { new: true });
+        try {
+          event = await Event.findByIdAndUpdate(id, updateData, { new: true });
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return event ? event.toObject() : null;
     } catch (error) {
       console.error('Error updating event:', error.message);
@@ -133,10 +174,18 @@ class DataService {
 
   async deleteEvent(id) {
     try {
-      let result = await Event.findByIdAndDelete(id);
+      // First try by custom id field (for seeded data)
+      let result = await Event.findOneAndDelete({ id });
+
+      // If not found, try by MongoDB _id
       if (!result) {
-        result = await Event.findOneAndDelete({ id });
+        try {
+          result = await Event.findByIdAndDelete(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return true;
     } catch (error) {
       console.error('Error deleting event:', error.message);
@@ -167,10 +216,20 @@ class DataService {
 
   async getPlaybookById(id) {
     try {
-      let playbook = await Playbook.findById(id);
+      let playbook = null;
+
+      // First try by custom id field (for seeded data)
+      playbook = await Playbook.findOne({ id });
+
+      // If not found, try by MongoDB _id
       if (!playbook) {
-        playbook = await Playbook.findOne({ id });
+        try {
+          playbook = await Playbook.findById(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format, that's OK
+        }
       }
+
       return playbook ? playbook.toObject() : null;
     } catch (error) {
       console.error('Error fetching playbook:', error.message);
@@ -191,10 +250,18 @@ class DataService {
 
   async updatePlaybook(id, updateData) {
     try {
-      let playbook = await Playbook.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by custom id field (for seeded data)
+      let playbook = await Playbook.findOneAndUpdate({ id }, updateData, { new: true });
+
+      // If not found, try by MongoDB _id
       if (!playbook) {
-        playbook = await Playbook.findOneAndUpdate({ id }, updateData, { new: true });
+        try {
+          playbook = await Playbook.findByIdAndUpdate(id, updateData, { new: true });
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return playbook ? playbook.toObject() : null;
     } catch (error) {
       console.error('Error updating playbook:', error.message);
@@ -204,10 +271,18 @@ class DataService {
 
   async deletePlaybook(id) {
     try {
-      let result = await Playbook.findByIdAndDelete(id);
+      // First try by custom id field (for seeded data)
+      let result = await Playbook.findOneAndDelete({ id });
+
+      // If not found, try by MongoDB _id
       if (!result) {
-        result = await Playbook.findOneAndDelete({ id });
+        try {
+          result = await Playbook.findByIdAndDelete(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return true;
     } catch (error) {
       console.error('Error deleting playbook:', error.message);
@@ -238,10 +313,20 @@ class DataService {
 
   async getMagazineById(id) {
     try {
-      let magazine = await Magazine.findById(id);
+      let magazine = null;
+
+      // First try by custom id field (for seeded data)
+      magazine = await Magazine.findOne({ id });
+
+      // If not found, try by MongoDB _id
       if (!magazine) {
-        magazine = await Magazine.findOne({ id });
+        try {
+          magazine = await Magazine.findById(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format, that's OK
+        }
       }
+
       return magazine ? magazine.toObject() : null;
     } catch (error) {
       console.error('Error fetching magazine:', error.message);
@@ -262,10 +347,18 @@ class DataService {
 
   async updateMagazine(id, updateData) {
     try {
-      let magazine = await Magazine.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by custom id field (for seeded data)
+      let magazine = await Magazine.findOneAndUpdate({ id }, updateData, { new: true });
+
+      // If not found, try by MongoDB _id
       if (!magazine) {
-        magazine = await Magazine.findOneAndUpdate({ id }, updateData, { new: true });
+        try {
+          magazine = await Magazine.findByIdAndUpdate(id, updateData, { new: true });
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return magazine ? magazine.toObject() : null;
     } catch (error) {
       console.error('Error updating magazine:', error.message);
@@ -275,10 +368,18 @@ class DataService {
 
   async deleteMagazine(id) {
     try {
-      let result = await Magazine.findByIdAndDelete(id);
+      // First try by custom id field (for seeded data)
+      let result = await Magazine.findOneAndDelete({ id });
+
+      // If not found, try by MongoDB _id
       if (!result) {
-        result = await Magazine.findOneAndDelete({ id });
+        try {
+          result = await Magazine.findByIdAndDelete(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return true;
     } catch (error) {
       console.error('Error deleting magazine:', error.message);
@@ -309,10 +410,20 @@ class DataService {
 
   async getMasterclassById(id) {
     try {
-      let masterclass = await Masterclass.findById(id);
+      let masterclass = null;
+
+      // First try by custom id field (for seeded data)
+      masterclass = await Masterclass.findOne({ id });
+
+      // If not found, try by MongoDB _id
       if (!masterclass) {
-        masterclass = await Masterclass.findOne({ id });
+        try {
+          masterclass = await Masterclass.findById(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format, that's OK
+        }
       }
+
       return masterclass ? masterclass.toObject() : null;
     } catch (error) {
       console.error('Error fetching masterclass:', error.message);
@@ -333,10 +444,18 @@ class DataService {
 
   async updateMasterclass(id, updateData) {
     try {
-      let masterclass = await Masterclass.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by custom id field (for seeded data)
+      let masterclass = await Masterclass.findOneAndUpdate({ id }, updateData, { new: true });
+
+      // If not found, try by MongoDB _id
       if (!masterclass) {
-        masterclass = await Masterclass.findOneAndUpdate({ id }, updateData, { new: true });
+        try {
+          masterclass = await Masterclass.findByIdAndUpdate(id, updateData, { new: true });
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return masterclass ? masterclass.toObject() : null;
     } catch (error) {
       console.error('Error updating masterclass:', error.message);
@@ -346,10 +465,18 @@ class DataService {
 
   async deleteMasterclass(id) {
     try {
-      let result = await Masterclass.findByIdAndDelete(id);
+      // First try by custom id field (for seeded data)
+      let result = await Masterclass.findOneAndDelete({ id });
+
+      // If not found, try by MongoDB _id
       if (!result) {
-        result = await Masterclass.findOneAndDelete({ id });
+        try {
+          result = await Masterclass.findByIdAndDelete(id);
+        } catch (err) {
+          // Not a valid MongoDB ID format
+        }
       }
+
       return true;
     } catch (error) {
       console.error('Error deleting masterclass:', error.message);
