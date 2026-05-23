@@ -236,22 +236,28 @@ exports.editArticlePage = async (req, res) => {
 
 exports.updateArticle = async (req, res) => {
   try {
-    const { title, category, subcategory, description, content, imageUrl } = req.body;
+    const { title, category, summary, url, tags } = req.body;
     const articleId = req.params.id;
 
     console.log('🔄 Updating article:', articleId);
-    console.log('📝 Update data:', { title, category, subcategory, description });
+    console.log('📝 Update data:', { title, category, summary, url, tags });
+
+    // Parse tags if it's a comma-separated string
+    const tagsArray = tags ? tags.split(',').map(t => t.trim()).filter(t => t) : [];
 
     const result = await DataService.updateArticle(articleId, {
       title,
       category,
-      subcategory: subcategory || 'general',
-      description,
-      content,
-      imageUrl,
+      summary,
+      url,
+      tags: tagsArray,
     });
 
     console.log('✅ Article updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+    if (result) {
+      console.log('   New title:', result.title);
+      console.log('   New category:', result.category);
+    }
 
     res.redirect('/admin/articles');
   } catch (error) {
@@ -323,20 +329,33 @@ exports.editEventPage = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
   try {
-    const { title, description, date, location, imageUrl, type } = req.body;
+    const { title, category, type, description, speaker, date, time, duration, url } = req.body;
+    const eventId = req.params.id;
 
-    await DataService.updateEvent(req.params.id, {
+    console.log('🔄 Updating event:', eventId);
+    console.log('📝 Update data:', { title, category, type, description, speaker, date, time, duration, url });
+
+    const result = await DataService.updateEvent(eventId, {
       title,
-      description,
-      date,
-      location,
-      imageUrl,
+      category,
       type,
+      description,
+      speaker,
+      date,
+      time,
+      duration: duration ? parseInt(duration) : undefined,
+      url,
     });
+
+    console.log('✅ Event updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+    if (result) {
+      console.log('   New title:', result.title);
+    }
+
     res.redirect('/admin/events');
   } catch (error) {
-    console.error('Error updating event:', error);
-    res.status(500).send('Failed to update event');
+    console.error('❌ Error updating event:', error.message);
+    res.status(500).send('Failed to update event: ' + error.message);
   }
 };
 
@@ -402,19 +421,29 @@ exports.editPlaybookPage = async (req, res) => {
 
 exports.updatePlaybook = async (req, res) => {
   try {
-    const { title, category, description, content, imageUrl } = req.body;
+    const { title, category, description, pages, downloadUrl } = req.body;
+    const playbookId = req.params.id;
 
-    await DataService.updatePlaybook(req.params.id, {
+    console.log('🔄 Updating playbook:', playbookId);
+    console.log('📝 Update data:', { title, category, description, pages, downloadUrl });
+
+    const result = await DataService.updatePlaybook(playbookId, {
       title,
       category,
       description,
-      content,
-      imageUrl,
+      pages: pages ? parseInt(pages) : undefined,
+      downloadUrl,
     });
+
+    console.log('✅ Playbook updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+    if (result) {
+      console.log('   New title:', result.title);
+    }
+
     res.redirect('/admin/playbooks');
   } catch (error) {
-    console.error('Error updating playbook:', error);
-    res.status(500).send('Failed to update playbook');
+    console.error('❌ Error updating playbook:', error.message);
+    res.status(500).send('Failed to update playbook: ' + error.message);
   }
 };
 
@@ -480,19 +509,32 @@ exports.editMasterclassPage = async (req, res) => {
 
 exports.updateMasterclass = async (req, res) => {
   try {
-    const { title, category, description, content, imageUrl } = req.body;
+    const { title, category, description, speaker, date, time, duration, price } = req.body;
+    const masterlassId = req.params.id;
 
-    await DataService.updateMasterclass(req.params.id, {
+    console.log('🔄 Updating masterclass:', masterlassId);
+    console.log('📝 Update data:', { title, category, description, speaker, date, time, duration, price });
+
+    const result = await DataService.updateMasterclass(masterlassId, {
       title,
       category,
       description,
-      content,
-      imageUrl,
+      speaker,
+      date,
+      time,
+      duration: duration ? parseInt(duration) : undefined,
+      price: price ? parseFloat(price) : undefined,
     });
+
+    console.log('✅ Masterclass updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+    if (result) {
+      console.log('   New title:', result.title);
+    }
+
     res.redirect('/admin/masterclasses');
   } catch (error) {
-    console.error('Error updating masterclass:', error);
-    res.status(500).send('Failed to update masterclass');
+    console.error('❌ Error updating masterclass:', error.message);
+    res.status(500).send('Failed to update masterclass: ' + error.message);
   }
 };
 
