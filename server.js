@@ -10,6 +10,7 @@ const Event = require('./models/Event');
 const Masterclass = require('./models/Masterclass');
 const Playbook = require('./models/Playbook');
 const Magazine = require('./models/Magazine');
+const { runStartupChecks } = require('./config/startup-checks');
 require('dotenv').config();
 
 const app = express();
@@ -150,8 +151,16 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 CXO TechBOT Backend running on http://localhost:${PORT}`);
+
+  // Run startup checks
+  try {
+    await runStartupChecks();
+  } catch (error) {
+    console.error('⚠️  Startup checks error:', error.message);
+  }
+
   console.log(`📡 API Documentation:`);
   console.log(`\n📚 CONTENT ENDPOINTS:`);
   console.log(`   GET  /articles?category=ai&page=1&limit=4`);
@@ -170,5 +179,6 @@ app.listen(PORT, () => {
   console.log(`   GET  http://localhost:${PORT}/admin/login`);
   console.log(`   GET  http://localhost:${PORT}/admin/leads`);
   console.log(`   GET  http://localhost:${PORT}/admin/articles`);
-  console.log(`\n💾 DATA STORED IN: JSON Files + MongoDB`);
+  console.log(`\n💾 DATA STORED IN: MongoDB`);
+  console.log(`✅ All systems operational!`);
 });

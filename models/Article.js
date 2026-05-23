@@ -17,11 +17,15 @@ const articleSchema = new mongoose.Schema(
     },
     subcategory: {
       type: String,
-      required: true,
+    },
+    summary: {
+      type: String,
     },
     description: {
       type: String,
-      required: true,
+    },
+    url: {
+      type: String,
     },
     content: {
       type: String,
@@ -29,9 +33,13 @@ const articleSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
+    tags: [String],
     clicks: {
       type: Number,
       default: 0,
+    },
+    createdAt: {
+      type: String,
     },
   },
   { timestamps: true }

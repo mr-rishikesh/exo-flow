@@ -13,11 +13,12 @@ const playbookSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     category: {
       type: String,
-      required: true,
+    },
+    subcategory: {
+      type: String,
     },
     content: {
       type: String,
@@ -25,9 +26,23 @@ const playbookSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
+    pages: {
+      type: Number,
+    },
+    downloadUrl: {
+      type: String,
+    },
+    tags: [String],
+    downloads: {
+      type: Number,
+      default: 0,
+    },
     clicks: {
       type: Number,
       default: 0,
+    },
+    createdAt: {
+      type: String,
     },
   },
   { timestamps: true }

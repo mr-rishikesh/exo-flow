@@ -13,15 +13,21 @@ const eventSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     date: {
       type: String,
-      required: true,
+    },
+    endDate: {
+      type: String,
+    },
+    time: {
+      type: String,
+    },
+    duration: {
+      type: String,
     },
     location: {
       type: String,
-      required: true,
     },
     imageUrl: {
       type: String,
@@ -29,9 +35,26 @@ const eventSchema = new mongoose.Schema(
     type: {
       type: String,
     },
+    category: {
+      type: String,
+    },
+    speaker: {
+      type: String,
+    },
+    url: {
+      type: String,
+    },
+    tags: [String],
+    registrations: {
+      type: Number,
+      default: 0,
+    },
     clicks: {
       type: Number,
       default: 0,
+    },
+    createdAt: {
+      type: String,
     },
   },
   { timestamps: true }
