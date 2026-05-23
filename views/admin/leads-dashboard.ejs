@@ -283,6 +283,23 @@
     .hidden-rows {
       display: none;
     }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      color: white !important;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
     .new-leads-section {
       background: white;
       border-radius: 12px;
@@ -438,7 +455,13 @@
   </div>
 
   <div class="container">
-    <h1 class="page-title">📊 Leads Management</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+      <h1 class="page-title" style="margin-bottom: 0;">📊 Leads Management</h1>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="/admin/leads/download/csv" class="download-btn" style="background: #2196f3;">📥 Download CSV</a>
+        <a href="/admin/leads/download/json" class="download-btn" style="background: #4caf50;">📥 Download JSON</a>
+      </div>
+    </div>
 
     <!-- New Leads Alert Section -->
     <% const unreviewed = leads.filter(lead => !lead.isReviewed); %>

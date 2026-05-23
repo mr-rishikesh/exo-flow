@@ -1,6 +1,7 @@
 const bcryptjs = require('bcryptjs');
 const Lead = require('../models/Lead');
 const DataService = require('../services/DataService');
+const LeadService = require('../services/LeadService');
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@cxotechbot.com';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
@@ -41,7 +42,7 @@ exports.logout = (req, res) => {
 
 exports.leadsPage = async (req, res) => {
   try {
-    const leads = await Lead.find().sort({ createdAt: -1 });
+    const leads = await LeadService.getAllLeads();
 
     // Group leads by type
     const leadsByCategory = {};
@@ -51,7 +52,7 @@ exports.leadsPage = async (req, res) => {
       // Add flag for new and unreviewed leads
       lead.isNewAndUnreviewed = !lead.isReviewed;
 
-      // Organize by type - sort by isNewAndUnreviewed first, then by createdAt
+      // Organize by type
       if (!leadsByCategory[lead.type]) {
         leadsByCategory[lead.type] = [];
       }
@@ -95,7 +96,7 @@ exports.leadsPage = async (req, res) => {
 
 exports.editLeadPage = async (req, res) => {
   try {
-    const lead = await Lead.findById(req.params.id);
+    const lead = await LeadService.getLeadById(req.params.id);
     if (!lead) {
       return res.status(404).send('Lead not found');
     }
@@ -109,11 +110,7 @@ exports.editLeadPage = async (req, res) => {
 exports.updateLeadStatus = async (req, res) => {
   try {
     const { status, notes } = req.body;
-    const lead = await Lead.findByIdAndUpdate(
-      req.params.id,
-      { status, notes },
-      { new: true }
-    );
+    await LeadService.updateLead(req.params.id, { status, notes });
     res.redirect('/admin/leads');
   } catch (error) {
     console.error('Error updating lead:', error);
@@ -123,7 +120,7 @@ exports.updateLeadStatus = async (req, res) => {
 
 exports.deleteLead = async (req, res) => {
   try {
-    await Lead.findByIdAndDelete(req.params.id);
+    await LeadService.deleteLead(req.params.id);
     res.redirect('/admin/leads');
   } catch (error) {
     console.error('Error deleting lead:', error);
@@ -133,18 +130,39 @@ exports.deleteLead = async (req, res) => {
 
 exports.toggleLeadReview = async (req, res) => {
   try {
-    const lead = await Lead.findById(req.params.id);
-    if (!lead) {
-      return res.status(404).json({ success: false, error: 'Lead not found' });
-    }
-
-    lead.isReviewed = !lead.isReviewed;
-    await lead.save();
-
+    const lead = await LeadService.toggleReview(req.params.id);
     res.json({ success: true, isReviewed: lead.isReviewed });
   } catch (error) {
     console.error('Error toggling lead review:', error);
     res.status(500).json({ success: false, error: 'Failed to toggle review status' });
+  }
+};
+
+exports.downloadLeadsCSV = async (req, res) => {
+  try {
+    const csv = await LeadService.exportLeadsAsCSV();
+    const timestamp = new Date().toISOString().split('T')[0];
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="leads-${timestamp}.csv"`);
+    res.send(csv);
+  } catch (error) {
+    console.error('Error downloading leads CSV:', error);
+    res.status(500).send('Failed to download leads');
+  }
+};
+
+exports.downloadLeadsJSON = async (req, res) => {
+  try {
+    const json = await LeadService.exportLeadsAsJSON();
+    const timestamp = new Date().toISOString().split('T')[0];
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="leads-${timestamp}.json"`);
+    res.send(json);
+  } catch (error) {
+    console.error('Error downloading leads JSON:', error);
+    res.status(500).send('Failed to download leads');
   }
 };
 

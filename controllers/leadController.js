@@ -1,4 +1,4 @@
-const Lead = require('../models/Lead');
+const LeadService = require('../services/LeadService');
 const NotificationService = require('../services/NotificationService');
 
 exports.createLead = async (req, res) => {
@@ -12,16 +12,16 @@ exports.createLead = async (req, res) => {
       });
     }
 
-    const lead = new Lead({
+    const leadData = {
       company,
-      email,
+      email: email.toLowerCase().trim(),
       phone: phone || '',
       message: message || '',
       file: file || null,
       type: type || 'general_inquiry',
-    });
+    };
 
-    await lead.save();
+    const lead = await LeadService.addLead(leadData);
 
     await NotificationService.notifyLead(lead);
 
@@ -41,8 +41,8 @@ exports.createLead = async (req, res) => {
 
 exports.getLeads = async (req, res) => {
   try {
-    const leads = await Lead.find().sort({ createdAt: -1 });
-    res.json(leads);
+    const leads = await LeadService.getAllLeads();
+    res.json(leads.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
   } catch (error) {
     console.error('Error fetching leads:', error);
     res.status(500).json({
@@ -54,7 +54,7 @@ exports.getLeads = async (req, res) => {
 
 exports.getLeadById = async (req, res) => {
   try {
-    const lead = await Lead.findById(req.params.id);
+    const lead = await LeadService.getLeadById(req.params.id);
     if (!lead) {
       return res.status(404).json({
         success: false,
@@ -74,11 +74,7 @@ exports.getLeadById = async (req, res) => {
 exports.updateLead = async (req, res) => {
   try {
     const { status, notes } = req.body;
-    const lead = await Lead.findByIdAndUpdate(
-      req.params.id,
-      { status, notes },
-      { new: true, runValidators: true }
-    );
+    const lead = await LeadService.updateLead(req.params.id, { status, notes });
 
     if (!lead) {
       return res.status(404).json({
@@ -103,13 +99,7 @@ exports.updateLead = async (req, res) => {
 
 exports.deleteLead = async (req, res) => {
   try {
-    const lead = await Lead.findByIdAndDelete(req.params.id);
-    if (!lead) {
-      return res.status(404).json({
-        success: false,
-        error: 'Lead not found',
-      });
-    }
+    await LeadService.deleteLead(req.params.id);
 
     res.json({
       success: true,

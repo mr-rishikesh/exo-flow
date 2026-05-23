@@ -12,40 +12,50 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f7fa;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #333;
+      min-height: 100vh;
     }
     .header {
-      background: white;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border-bottom: 3px solid #667eea;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
     }
     .header h1 {
-      font-size: 24px;
+      font-size: 28px;
       color: #333;
+      font-weight: 700;
     }
     .nav-links {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .nav-links a {
-      padding: 8px 12px;
+      padding: 10px 16px;
       background: #667eea;
       color: white;
       text-decoration: none;
-      border-radius: 4px;
-      font-size: 13px;
-      transition: background 0.3s;
-      white-space: nowrap;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .nav-links a:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+    }
+    .nav-links a.active {
       background: #764ba2;
     }
     .nav-links a.logout {
@@ -55,65 +65,93 @@
       background: #c0392b;
     }
     .container {
-      max-width: 800px;
-      margin: 30px auto;
+      max-width: 900px;
+      margin: 40px auto;
       padding: 0 20px;
+    }
+    .page-title {
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
     }
     .form-wrapper {
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      padding: 40px;
     }
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       font-weight: 600;
       color: #333;
+      font-size: 15px;
     }
     input[type="text"],
-    textarea {
+    textarea,
+    select {
       width: 100%;
-      padding: 10px;
+      padding: 12px 15px;
       border: 1px solid #e0e0e0;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 14px;
       font-family: inherit;
+      transition: all 0.3s;
     }
     textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 120px;
     }
     input[type="text"]:focus,
-    textarea:focus {
+    textarea:focus,
+    select:focus {
       outline: none;
       border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    .form-hint {
+      font-size: 12px;
+      color: #999;
+      margin-top: 6px;
+    }
+    .preview-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
     }
     .preview-image {
-      margin-top: 10px;
-      max-width: 200px;
-      max-height: 300px;
-      border-radius: 4px;
-      border: 1px solid #e0e0e0;
-      padding: 5px;
+      margin-top: 15px;
+      max-width: 250px;
+      max-height: 350px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      display: none;
     }
     .button-group {
       display: flex;
-      gap: 10px;
-      margin-top: 30px;
+      gap: 12px;
+      margin-top: 35px;
     }
-    button {
-      padding: 10px 20px;
+    button,
+    .btn-cancel {
+      padding: 12px 28px;
       border: none;
-      border-radius: 4px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .btn-primary {
       background: #667eea;
@@ -121,15 +159,20 @@
       flex: 1;
     }
     .btn-primary:hover {
-      opacity: 0.9;
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
-    .btn-secondary {
+    .btn-cancel {
       background: #e0e0e0;
       color: #333;
       flex: 1;
+      text-decoration: none;
+      border: none;
     }
-    .btn-secondary:hover {
-      opacity: 0.8;
+    .btn-cancel:hover {
+      background: #d0d0d0;
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -137,43 +180,56 @@
   <div class="header">
     <h1>📑 Create New Magazine</h1>
     <div class="nav-links">
+      <a href="/admin/dashboard">📊 Dashboard</a>
       <a href="/admin/leads">🔴 Leads</a>
       <a href="/admin/articles">📝 Articles</a>
       <a href="/admin/events">📅 Events</a>
       <a href="/admin/playbooks">📖 Playbooks</a>
       <a href="/admin/masterclasses">🎓 Masterclasses</a>
-      <a href="/admin/magazines" style="background: #764ba2;">📑 Magazines</a>
+      <a href="/admin/magazines" class="active">📑 Magazines</a>
       <a href="/admin/logout" class="logout">🚪 Logout</a>
     </div>
   </div>
 
   <div class="container">
+    <h2 class="page-title">Add a New Magazine to Your Collection</h2>
+
     <div class="form-wrapper">
       <form method="POST" action="/admin/magazines/create">
         <div class="form-group">
-          <label>Title *</label>
-          <input type="text" name="title" required>
+          <label>📰 Magazine Title *</label>
+          <input type="text" name="title" required placeholder="Enter magazine title (e.g., CXO TechBOT - May 2026)">
+          <div class="form-hint">A clear, descriptive title for the magazine</div>
         </div>
 
         <div class="form-group">
-          <label>Category *</label>
-          <input type="text" name="category" required>
+          <label>🏷️ Category *</label>
+          <input type="text" name="category" required placeholder="e.g., cxo-techbot, health-techbot, coffee-table-book">
+          <div class="form-hint">Examples: cxo-techbot, health-techbot, sustainability-techbot, bharat-techbot, coffee-table-book</div>
         </div>
 
         <div class="form-group">
-          <label>Description</label>
-          <textarea name="description"></textarea>
+          <label>📝 Description</label>
+          <textarea name="description" placeholder="Describe the magazine content, target audience, and key features..."></textarea>
+          <div class="form-hint">This description will appear when users view magazine details</div>
         </div>
 
         <div class="form-group">
-          <label>Cover Image URL</label>
-          <input type="text" name="coverImage" id="coverImageUrl" onchange="previewImage()">
-          <img id="imagePreview" class="preview-image" style="display:none;">
+          <label>🖼️ Cover Image URL</label>
+          <input type="text" name="coverImage" id="coverImageUrl" placeholder="https://example.com/cover-image.jpg" onchange="previewImage()">
+          <div class="form-hint">Paste the full URL of the magazine cover image</div>
+
+          <div id="previewContainer" style="display:none;">
+            <div class="preview-section">
+              <strong>📷 Cover Preview:</strong>
+              <img id="imagePreview" class="preview-image">
+            </div>
+          </div>
         </div>
 
         <div class="button-group">
           <button type="submit" class="btn-primary">➕ Create Magazine</button>
-          <button type="button" class="btn-secondary" onclick="window.location='/admin/magazines'">❌ Cancel</button>
+          <a href="/admin/magazines" class="btn-cancel">❌ Cancel</a>
         </div>
       </form>
     </div>
@@ -183,11 +239,19 @@
     function previewImage() {
       const url = document.getElementById('coverImageUrl').value;
       const preview = document.getElementById('imagePreview');
+      const container = document.getElementById('previewContainer');
+
       if (url) {
         preview.src = url;
-        preview.style.display = 'block';
+        preview.onload = function() {
+          container.style.display = 'block';
+        };
+        preview.onerror = function() {
+          container.style.display = 'none';
+          alert('Unable to load image. Please check the URL.');
+        };
       } else {
-        preview.style.display = 'none';
+        container.style.display = 'none';
       }
     }
   </script>

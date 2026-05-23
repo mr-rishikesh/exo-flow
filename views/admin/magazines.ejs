@@ -12,40 +12,50 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f7fa;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #333;
+      min-height: 100vh;
     }
     .header {
-      background: white;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border-bottom: 3px solid #667eea;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
     }
     .header h1 {
-      font-size: 24px;
+      font-size: 28px;
       color: #333;
+      font-weight: 700;
     }
     .nav-links {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .nav-links a {
-      padding: 8px 12px;
+      padding: 10px 16px;
       background: #667eea;
       color: white;
       text-decoration: none;
-      border-radius: 4px;
-      font-size: 13px;
-      transition: background 0.3s;
-      white-space: nowrap;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .nav-links a:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+    }
+    .nav-links a.active {
       background: #764ba2;
     }
     .nav-links a.logout {
@@ -55,14 +65,37 @@
       background: #c0392b;
     }
     .container {
-      max-width: 1200px;
-      margin: 30px auto;
+      max-width: 1300px;
+      margin: 40px auto;
       padding: 0 20px;
+    }
+    .page-title {
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    .btn-new {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #4caf50;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    }
+    .btn-new:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
     }
     .table-wrapper {
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       overflow: hidden;
     }
     table {
@@ -70,39 +103,60 @@
       border-collapse: collapse;
     }
     th {
-      background: #667eea;
-      color: white;
-      padding: 15px;
+      background: #f8f9fa;
+      color: #333;
+      padding: 18px;
       text-align: left;
       font-weight: 600;
+      font-size: 14px;
+      border-bottom: 2px solid #e0e0e0;
     }
     td {
-      padding: 15px;
+      padding: 16px 18px;
       border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
     }
     tr:hover {
       background: #f9f9f9;
     }
-    .category-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      background: #e0e0e0;
-      border-radius: 4px;
+    .magazine-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .cover-image {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      flex-shrink: 0;
+    }
+    .magazine-info {
+      flex: 1;
+    }
+    .magazine-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .magazine-description {
       font-size: 12px;
       color: #666;
-    }
-    .description-text {
-      font-size: 13px;
-      color: #666;
-      max-width: 250px;
+      max-width: 300px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .cover-image {
-      max-width: 50px;
-      max-height: 50px;
-      border-radius: 4px;
+    .category-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #e3f2fd;
+      color: #1976d2;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
     }
     .action-links {
       display: flex;
@@ -110,30 +164,40 @@
     }
     .action-links a,
     .action-links button {
-      padding: 6px 12px;
-      font-size: 12px;
-      border-radius: 4px;
+      padding: 8px 14px;
+      font-size: 13px;
+      border-radius: 6px;
       text-decoration: none;
       border: none;
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: all 0.3s;
+      font-weight: 500;
+      white-space: nowrap;
     }
     .action-links a.edit {
       background: #2196f3;
       color: white;
     }
+    .action-links a.edit:hover {
+      background: #1976d2;
+      transform: translateY(-1px);
+    }
     .action-links button.delete {
       background: #f44336;
       color: white;
     }
-    .action-links a:hover,
-    .action-links button:hover {
-      opacity: 0.8;
+    .action-links button.delete:hover {
+      background: #d32f2f;
+      transform: translateY(-1px);
     }
     .empty-state {
       text-align: center;
       padding: 60px 20px;
       color: #999;
+    }
+    .empty-state p {
+      font-size: 20px;
+      margin: 15px 0;
     }
   </style>
 </head>
@@ -141,45 +205,46 @@
   <div class="header">
     <h1>📑 Magazines Management</h1>
     <div class="nav-links">
+      <a href="/admin/dashboard">📊 Dashboard</a>
       <a href="/admin/leads">🔴 Leads</a>
       <a href="/admin/articles">📝 Articles</a>
       <a href="/admin/events">📅 Events</a>
       <a href="/admin/playbooks">📖 Playbooks</a>
       <a href="/admin/masterclasses">🎓 Masterclasses</a>
-      <a href="/admin/magazines" style="background: #764ba2;">📑 Magazines</a>
+      <a href="/admin/magazines" class="active">📑 Magazines</a>
       <a href="/admin/logout" class="logout">🚪 Logout</a>
     </div>
   </div>
 
   <div class="container">
-    <div style="margin-bottom: 20px;">
-      <a href="/admin/magazines/new" style="display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; font-weight: 600;">➕ Add New Magazine</a>
-    </div>
+    <a href="/admin/magazines/new" class="btn-new">➕ Add New Magazine</a>
 
     <% if (magazines && magazines.length > 0) { %>
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th>Title</th>
+              <th>Magazine</th>
               <th>Category</th>
-              <th>Description</th>
-              <th>Cover Image</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <% magazines.forEach(magazine => { %>
               <tr>
-                <td><strong><%= magazine.title %></strong></td>
-                <td><span class="category-badge"><%= magazine.category %></span></td>
-                <td><span class="description-text"><%= magazine.description || '-' %></span></td>
                 <td>
-                  <% if (magazine.coverImage) { %>
-                    <img src="<%= magazine.coverImage %>" alt="<%= magazine.title %>" class="cover-image">
-                  <% } else { %>
-                    -
-                  <% } %>
+                  <div class="magazine-card">
+                    <% if (magazine.coverImage) { %>
+                      <img src="<%= magazine.coverImage %>" alt="<%= magazine.title %>" class="cover-image">
+                    <% } %>
+                    <div class="magazine-info">
+                      <div class="magazine-title"><%= magazine.title %></div>
+                      <div class="magazine-description"><%= magazine.description || 'No description' %></div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="category-badge"><%= magazine.category %></span>
                 </td>
                 <td>
                   <div class="action-links">
@@ -195,8 +260,12 @@
         </table>
       </div>
     <% } else { %>
-      <div class="empty-state">
-        <p>📭 No magazines yet</p>
+      <div class="table-wrapper">
+        <div class="empty-state">
+          <p style="font-size: 48px;">📭</p>
+          <p>No magazines yet</p>
+          <p style="font-size: 14px; color: #bbb; margin-top: 15px;">Click "Add New Magazine" to create one</p>
+        </div>
       </div>
     <% } %>
   </div>
