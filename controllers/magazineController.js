@@ -1,9 +1,9 @@
 const DataService = require('../services/DataService');
 const FilterService = require('../services/FilterService');
 
-exports.getMagazines = (req, res) => {
+exports.getMagazines = async (req, res) => {
   try {
-    const magazines = DataService.getMagazines();
+    const magazines = await DataService.getMagazines();
     const options = {
       category: req.query.category,
       q: req.query.q,
@@ -20,9 +20,9 @@ exports.getMagazines = (req, res) => {
   }
 };
 
-exports.getMagazineById = (req, res) => {
+exports.getMagazineById = async (req, res) => {
   try {
-    const magazines = DataService.getMagazines();
+    const magazines = await DataService.getMagazines();
     const magazine = magazines.find((m) => m.id === req.params.id);
 
     if (!magazine) {
@@ -35,9 +35,9 @@ exports.getMagazineById = (req, res) => {
   }
 };
 
-exports.getMagazineCategories = (req, res) => {
+exports.getMagazineCategories = async (req, res) => {
   try {
-    const magazines = DataService.getMagazines();
+    const magazines = await DataService.getMagazines();
     const categories = {};
 
     magazines.forEach((mag) => {
@@ -63,10 +63,10 @@ exports.getMagazineCategories = (req, res) => {
   }
 };
 
-exports.recordDownload = (req, res) => {
+exports.recordDownload = async (req, res) => {
   try {
     const { id } = req.params;
-    const magazines = DataService.getMagazines();
+    const magazines = await DataService.getMagazines();
     const magazine = magazines.find((m) => m.id === id);
 
     if (!magazine) {

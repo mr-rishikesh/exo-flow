@@ -1,9 +1,9 @@
 const DataService = require('../services/DataService');
 const FilterService = require('../services/FilterService');
 
-exports.getEvents = (req, res) => {
+exports.getEvents = async (req, res) => {
   try {
-    const events = DataService.getEvents();
+    const events = await DataService.getEvents();
     const options = {
       type: req.query.type,
       category: req.query.category,
@@ -21,9 +21,9 @@ exports.getEvents = (req, res) => {
   }
 };
 
-exports.getEventById = (req, res) => {
+exports.getEventById = async (req, res) => {
   try {
-    const events = DataService.getEvents();
+    const events = await DataService.getEvents();
     const event = events.find((e) => e.id === req.params.id);
 
     if (!event) {
@@ -36,9 +36,9 @@ exports.getEventById = (req, res) => {
   }
 };
 
-exports.getEventTypes = (req, res) => {
+exports.getEventTypes = async (req, res) => {
   try {
-    const events = DataService.getEvents();
+    const events = await DataService.getEvents();
     const types = new Set();
     const categories = new Set();
 
@@ -56,10 +56,10 @@ exports.getEventTypes = (req, res) => {
   }
 };
 
-exports.recordRegistration = (req, res) => {
+exports.recordRegistration = async (req, res) => {
   try {
     const { id } = req.params;
-    const events = DataService.getEvents();
+    const events = await DataService.getEvents();
     const event = events.find((e) => e.id === id);
 
     if (!event) {

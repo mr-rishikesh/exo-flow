@@ -1,9 +1,9 @@
 const DataService = require('../services/DataService');
 const FilterService = require('../services/FilterService');
 
-exports.getMasterclasses = (req, res) => {
+exports.getMasterclasses = async (req, res) => {
   try {
-    const masterclasses = DataService.getMasterclasses();
+    const masterclasses = await DataService.getMasterclasses();
     const options = {
       category: req.query.category,
       q: req.query.q,
@@ -20,9 +20,9 @@ exports.getMasterclasses = (req, res) => {
   }
 };
 
-exports.getMasterclassById = (req, res) => {
+exports.getMasterclassById = async (req, res) => {
   try {
-    const masterclasses = DataService.getMasterclasses();
+    const masterclasses = await DataService.getMasterclasses();
     const masterclass = masterclasses.find((m) => m.id === req.params.id);
 
     if (!masterclass) {
@@ -35,9 +35,9 @@ exports.getMasterclassById = (req, res) => {
   }
 };
 
-exports.getMasterclassCategories = (req, res) => {
+exports.getMasterclassCategories = async (req, res) => {
   try {
-    const masterclasses = DataService.getMasterclasses();
+    const masterclasses = await DataService.getMasterclasses();
     const categories = {};
 
     masterclasses.forEach((mc) => {
@@ -61,10 +61,10 @@ exports.getMasterclassCategories = (req, res) => {
   }
 };
 
-exports.recordEnrollment = (req, res) => {
+exports.recordEnrollment = async (req, res) => {
   try {
     const { id } = req.params;
-    const masterclasses = DataService.getMasterclasses();
+    const masterclasses = await DataService.getMasterclasses();
     const masterclass = masterclasses.find((m) => m.id === id);
 
     if (!masterclass) {

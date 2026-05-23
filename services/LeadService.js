@@ -1,33 +1,9 @@
-const fs = require('fs').promises;
-const path = require('path');
-const ExcelJS = require('exceljs');
+const Lead = require('../models/Lead');
 
-const LEADS_DIR = path.join(__dirname, '../data/leads');
-const LEADS_INDEX_FILE = path.join(LEADS_DIR, 'index.json');
-
-// Ensure leads directory exists
-async function ensureLeadsDir() {
-  try {
-    await fs.mkdir(LEADS_DIR, { recursive: true });
-    // Create index.json if it doesn't exist
-    try {
-      await fs.access(LEADS_INDEX_FILE);
-    } catch (error) {
-      // File doesn't exist, create empty array
-      await fs.writeFile(LEADS_INDEX_FILE, JSON.stringify([], null, 2), 'utf-8');
-    }
-  } catch (error) {
-    console.error('Error creating leads directory:', error);
-    throw new Error('Failed to initialize leads storage');
-  }
-}
-
-// Initialize leads storage on startup
+// Initialize leads storage (no-op for MongoDB, kept for compatibility)
 async function initializeLeads() {
   try {
-    await ensureLeadsDir();
-    const leads = await getAllLeads();
-    console.log(`✅ Leads service initialized. Currently ${leads.length} leads stored.`);
+    console.log('✅ Leads service initialized with MongoDB');
     return true;
   } catch (error) {
     console.error('❌ Failed to initialize leads service:', error.message);
@@ -38,27 +14,17 @@ async function initializeLeads() {
 // Get all leads
 async function getAllLeads() {
   try {
-    await ensureLeadsDir();
-
-    try {
-      const data = await fs.readFile(LEADS_INDEX_FILE, 'utf-8');
-      return JSON.parse(data);
-    } catch (error) {
-      // File doesn't exist yet, return empty array
-      console.warn('Leads file not found, returning empty array');
-      return [];
-    }
+    const leads = await Lead.find().sort({ createdAt: -1 });
+    return leads;
   } catch (error) {
     console.error('Error reading leads:', error);
     return [];
   }
 }
 
-// Save all leads
+// Save all leads (no-op for MongoDB, kept for compatibility)
 async function saveAllLeads(leads) {
   try {
-    await ensureLeadsDir();
-    await fs.writeFile(LEADS_INDEX_FILE, JSON.stringify(leads, null, 2), 'utf-8');
     return true;
   } catch (error) {
     console.error('Error saving leads:', error);
@@ -69,20 +35,19 @@ async function saveAllLeads(leads) {
 // Add a new lead
 async function addLead(leadData) {
   try {
-    const leads = await getAllLeads();
-
-    const newLead = {
-      id: `lead-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      ...leadData,
+    const newLead = new Lead({
+      company: leadData.company,
+      email: leadData.email.toLowerCase().trim(),
+      phone: leadData.phone || '',
+      message: leadData.message || '',
+      file: leadData.file || null,
+      type: leadData.type || 'general_inquiry',
       isReviewed: false,
       status: 'new',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    });
 
-    leads.push(newLead);
-    await saveAllLeads(leads);
-    return newLead;
+    const saved = await newLead.save();
+    return saved.toObject();
   } catch (error) {
     console.error('Error adding lead:', error);
     throw error;
@@ -92,8 +57,8 @@ async function addLead(leadData) {
 // Get lead by ID
 async function getLeadById(id) {
   try {
-    const leads = await getAllLeads();
-    return leads.find(lead => lead.id === id);
+    const lead = await Lead.findById(id);
+    return lead ? lead.toObject() : null;
   } catch (error) {
     console.error('Error getting lead:', error);
     return null;
@@ -103,21 +68,19 @@ async function getLeadById(id) {
 // Update lead
 async function updateLead(id, updateData) {
   try {
-    const leads = await getAllLeads();
-    const leadIndex = leads.findIndex(lead => lead.id === id);
+    const lead = await Lead.findByIdAndUpdate(
+      id,
+      {
+        ...updateData,
+      },
+      { new: true }
+    );
 
-    if (leadIndex === -1) {
+    if (!lead) {
       throw new Error('Lead not found');
     }
 
-    leads[leadIndex] = {
-      ...leads[leadIndex],
-      ...updateData,
-      updatedAt: new Date().toISOString(),
-    };
-
-    await saveAllLeads(leads);
-    return leads[leadIndex];
+    return lead.toObject();
   } catch (error) {
     console.error('Error updating lead:', error);
     throw error;
@@ -127,9 +90,7 @@ async function updateLead(id, updateData) {
 // Delete lead
 async function deleteLead(id) {
   try {
-    const leads = await getAllLeads();
-    const filtered = leads.filter(lead => lead.id !== id);
-    await saveAllLeads(filtered);
+    await Lead.findByIdAndDelete(id);
     return true;
   } catch (error) {
     console.error('Error deleting lead:', error);
@@ -140,8 +101,8 @@ async function deleteLead(id) {
 // Get leads by type
 async function getLeadsByType(type) {
   try {
-    const leads = await getAllLeads();
-    return leads.filter(lead => lead.type === type);
+    const leads = await Lead.find({ type }).sort({ createdAt: -1 });
+    return leads.map(l => l.toObject());
   } catch (error) {
     console.error('Error getting leads by type:', error);
     return [];
@@ -151,7 +112,7 @@ async function getLeadsByType(type) {
 // Toggle review status
 async function toggleReview(id) {
   try {
-    const lead = await getLeadById(id);
+    const lead = await Lead.findById(id);
     if (!lead) {
       throw new Error('Lead not found');
     }
@@ -168,22 +129,24 @@ async function toggleReview(id) {
 // Export leads as CSV
 async function exportLeadsAsCSV() {
   try {
-    const leads = await getAllLeads();
+    const leads = await Lead.find();
 
     if (leads.length === 0) {
       return '';
     }
 
+    const leadObjects = leads.map(l => l.toObject());
+
     // Get all unique keys
     const allKeys = new Set();
-    leads.forEach(lead => {
+    leadObjects.forEach(lead => {
       Object.keys(lead).forEach(key => allKeys.add(key));
     });
 
     const headers = Array.from(allKeys);
     const csvHeaders = headers.join(',');
 
-    const csvRows = leads.map(lead => {
+    const csvRows = leadObjects.map(lead => {
       return headers.map(header => {
         const value = lead[header];
         if (value === null || value === undefined) {
@@ -208,8 +171,9 @@ async function exportLeadsAsCSV() {
 // Export leads as JSON
 async function exportLeadsAsJSON() {
   try {
-    const leads = await getAllLeads();
-    return JSON.stringify(leads, null, 2);
+    const leads = await Lead.find();
+    const leadObjects = leads.map(l => l.toObject());
+    return JSON.stringify(leadObjects, null, 2);
   } catch (error) {
     console.error('Error exporting leads:', error);
     throw error;
@@ -219,21 +183,22 @@ async function exportLeadsAsJSON() {
 // Get statistics
 async function getLeadStats() {
   try {
-    const leads = await getAllLeads();
+    const leads = await Lead.find();
+    const leadObjects = leads.map(l => l.toObject());
 
     const stats = {
-      total: leads.length,
-      new: leads.filter(l => l.status === 'new').length,
-      contacted: leads.filter(l => l.status === 'contacted').length,
-      replied: leads.filter(l => l.status === 'replied').length,
-      closed: leads.filter(l => l.status === 'closed').length,
-      reviewed: leads.filter(l => l.isReviewed).length,
-      unreviewed: leads.filter(l => !l.isReviewed).length,
+      total: leadObjects.length,
+      new: leadObjects.filter(l => l.status === 'new').length,
+      contacted: leadObjects.filter(l => l.status === 'contacted').length,
+      replied: leadObjects.filter(l => l.status === 'replied').length,
+      closed: leadObjects.filter(l => l.status === 'closed').length,
+      reviewed: leadObjects.filter(l => l.isReviewed).length,
+      unreviewed: leadObjects.filter(l => !l.isReviewed).length,
       byType: {},
     };
 
     // Count by type
-    leads.forEach(lead => {
+    leadObjects.forEach(lead => {
       if (!stats.byType[lead.type]) {
         stats.byType[lead.type] = 0;
       }
@@ -250,11 +215,13 @@ async function getLeadStats() {
 // Export leads as Excel with separate sheets for each category
 async function exportLeadsAsExcel() {
   try {
-    const leads = await getAllLeads();
+    const ExcelJS = require('exceljs');
+    const leads = await Lead.find();
+    const leadObjects = leads.map(l => l.toObject());
 
     // Group leads by type
     const leadsByType = {};
-    leads.forEach(lead => {
+    leadObjects.forEach(lead => {
       if (!leadsByType[lead.type]) {
         leadsByType[lead.type] = [];
       }
@@ -291,7 +258,7 @@ async function exportLeadsAsExcel() {
 
       // Set column widths
       worksheet.columns = [
-        { header: 'ID', key: 'id', width: 25 },
+        { header: 'ID', key: '_id', width: 25 },
         { header: 'Email', key: 'email', width: 25 },
         { header: 'Company', key: 'company', width: 20 },
         { header: 'Phone', key: 'phone', width: 15 },
@@ -311,7 +278,7 @@ async function exportLeadsAsExcel() {
       // Add data rows
       typeLeads.forEach(lead => {
         worksheet.addRow({
-          id: lead.id,
+          _id: lead._id.toString(),
           email: lead.email,
           company: lead.company || 'N/A',
           phone: lead.phone || 'N/A',
@@ -367,8 +334,8 @@ async function exportLeadsAsExcel() {
     });
 
     // Add totals row
-    const totalLeads = leads.length;
-    const totalReviewed = leads.filter(l => l.isReviewed).length;
+    const totalLeads = leadObjects.length;
+    const totalReviewed = leadObjects.filter(l => l.isReviewed).length;
     const totalUnreviewed = totalLeads - totalReviewed;
 
     summarySheet.addRow({
@@ -392,7 +359,6 @@ async function exportLeadsAsExcel() {
 
 module.exports = {
   initializeLeads,
-  ensureLeadsDir,
   getAllLeads,
   saveAllLeads,
   addLead,

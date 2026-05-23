@@ -198,23 +198,20 @@ exports.newArticlePage = (req, res) => {
 
 exports.createArticle = async (req, res) => {
   try {
-    const { title, category, summary, url, tags } = req.body;
-    const articles = await DataService.getArticles();
+    const { title, category, subcategory, description, content, imageUrl } = req.body;
 
     const newArticle = {
-      id: `art-${String(articles.length + 1).padStart(3, '0')}`,
-      category,
-      subcategory: 'general',
+      id: `art-${Date.now()}`,
       title,
-      summary,
-      url,
-      tags: tags ? tags.split(',').map(t => t.trim()) : [],
-      createdAt: new Date().toISOString().split('T')[0],
+      category,
+      subcategory: subcategory || 'general',
+      description,
+      content,
+      imageUrl,
       clicks: 0,
     };
 
-    articles.push(newArticle);
-    await DataService.saveArticles(articles);
+    await DataService.createArticle(newArticle);
     res.redirect('/admin/articles');
   } catch (error) {
     console.error('Error creating article:', error);
@@ -224,8 +221,7 @@ exports.createArticle = async (req, res) => {
 
 exports.editArticlePage = async (req, res) => {
   try {
-    const articles = await DataService.getArticles();
-    const article = articles.find(a => a.id === req.params.id);
+    const article = await DataService.getArticleById(req.params.id);
 
     if (!article) {
       return res.status(404).send('Article not found');
@@ -240,24 +236,16 @@ exports.editArticlePage = async (req, res) => {
 
 exports.updateArticle = async (req, res) => {
   try {
-    const { title, category, summary, url, tags } = req.body;
-    const articles = await DataService.getArticles();
+    const { title, category, subcategory, description, content, imageUrl } = req.body;
 
-    const articleIndex = articles.findIndex(a => a.id === req.params.id);
-    if (articleIndex === -1) {
-      return res.status(404).send('Article not found');
-    }
-
-    articles[articleIndex] = {
-      ...articles[articleIndex],
+    await DataService.updateArticle(req.params.id, {
       title,
       category,
-      summary,
-      url,
-      tags: tags ? tags.split(',').map(t => t.trim()) : [],
-    };
-
-    await DataService.saveArticles(articles);
+      subcategory: subcategory || 'general',
+      description,
+      content,
+      imageUrl,
+    });
     res.redirect('/admin/articles');
   } catch (error) {
     console.error('Error updating article:', error);
@@ -267,9 +255,7 @@ exports.updateArticle = async (req, res) => {
 
 exports.deleteArticle = async (req, res) => {
   try {
-    const articles = await DataService.getArticles();
-    const filtered = articles.filter(a => a.id !== req.params.id);
-    await DataService.saveArticles(filtered);
+    await DataService.deleteArticle(req.params.id);
     res.redirect('/admin/articles');
   } catch (error) {
     console.error('Error deleting article:', error);
@@ -294,25 +280,20 @@ exports.newEventPage = (req, res) => {
 
 exports.createEvent = async (req, res) => {
   try {
-    const { title, category, type, description, speaker, date, time, duration, url } = req.body;
-    const events = await DataService.getEvents();
+    const { title, description, date, location, imageUrl, type } = req.body;
 
     const newEvent = {
-      id: `evt-${String(events.length + 1).padStart(3, '0')}`,
+      id: `evt-${Date.now()}`,
       title,
-      category,
-      type,
       description,
-      speaker,
       date,
-      time,
-      duration,
-      url,
-      createdAt: new Date().toISOString().split('T')[0],
+      location,
+      imageUrl,
+      type,
+      clicks: 0,
     };
 
-    events.push(newEvent);
-    await DataService.saveEvents(events);
+    await DataService.createEvent(newEvent);
     res.redirect('/admin/events');
   } catch (error) {
     console.error('Error creating event:', error);
@@ -322,8 +303,7 @@ exports.createEvent = async (req, res) => {
 
 exports.editEventPage = async (req, res) => {
   try {
-    const events = await DataService.getEvents();
-    const event = events.find(e => e.id === req.params.id);
+    const event = await DataService.getEventById(req.params.id);
     if (!event) {
       return res.status(404).send('Event not found');
     }
@@ -336,25 +316,16 @@ exports.editEventPage = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
   try {
-    const { title, category, type, description, speaker, date, time, duration, url } = req.body;
-    const events = await DataService.getEvents();
-    const eventIndex = events.findIndex(e => e.id === req.params.id);
-    if (eventIndex === -1) {
-      return res.status(404).send('Event not found');
-    }
-    events[eventIndex] = {
-      ...events[eventIndex],
+    const { title, description, date, location, imageUrl, type } = req.body;
+
+    await DataService.updateEvent(req.params.id, {
       title,
-      category,
-      type,
       description,
-      speaker,
       date,
-      time,
-      duration,
-      url,
-    };
-    await DataService.saveEvents(events);
+      location,
+      imageUrl,
+      type,
+    });
     res.redirect('/admin/events');
   } catch (error) {
     console.error('Error updating event:', error);
@@ -364,9 +335,7 @@ exports.updateEvent = async (req, res) => {
 
 exports.deleteEvent = async (req, res) => {
   try {
-    const events = await DataService.getEvents();
-    const filtered = events.filter(e => e.id !== req.params.id);
-    await DataService.saveEvents(filtered);
+    await DataService.deleteEvent(req.params.id);
     res.redirect('/admin/events');
   } catch (error) {
     console.error('Error deleting event:', error);
@@ -391,22 +360,19 @@ exports.newPlaybookPage = (req, res) => {
 
 exports.createPlaybook = async (req, res) => {
   try {
-    const { title, category, description, pages, downloadUrl } = req.body;
-    const playbooks = await DataService.getPlaybooks();
+    const { title, category, description, content, imageUrl } = req.body;
 
     const newPlaybook = {
-      id: `pb-${String(playbooks.length + 1).padStart(3, '0')}`,
+      id: `pb-${Date.now()}`,
       title,
       category,
       description,
-      pages,
-      downloadUrl,
-      downloads: 0,
-      createdAt: new Date().toISOString().split('T')[0],
+      content,
+      imageUrl,
+      clicks: 0,
     };
 
-    playbooks.push(newPlaybook);
-    await DataService.savePlaybooks(playbooks);
+    await DataService.createPlaybook(newPlaybook);
     res.redirect('/admin/playbooks');
   } catch (error) {
     console.error('Error creating playbook:', error);
@@ -416,8 +382,7 @@ exports.createPlaybook = async (req, res) => {
 
 exports.editPlaybookPage = async (req, res) => {
   try {
-    const playbooks = await DataService.getPlaybooks();
-    const playbook = playbooks.find(p => p.id === req.params.id);
+    const playbook = await DataService.getPlaybookById(req.params.id);
     if (!playbook) {
       return res.status(404).send('Playbook not found');
     }
@@ -430,21 +395,15 @@ exports.editPlaybookPage = async (req, res) => {
 
 exports.updatePlaybook = async (req, res) => {
   try {
-    const { title, category, description, pages, downloadUrl } = req.body;
-    const playbooks = await DataService.getPlaybooks();
-    const playbookIndex = playbooks.findIndex(p => p.id === req.params.id);
-    if (playbookIndex === -1) {
-      return res.status(404).send('Playbook not found');
-    }
-    playbooks[playbookIndex] = {
-      ...playbooks[playbookIndex],
+    const { title, category, description, content, imageUrl } = req.body;
+
+    await DataService.updatePlaybook(req.params.id, {
       title,
       category,
       description,
-      pages,
-      downloadUrl,
-    };
-    await DataService.savePlaybooks(playbooks);
+      content,
+      imageUrl,
+    });
     res.redirect('/admin/playbooks');
   } catch (error) {
     console.error('Error updating playbook:', error);
@@ -454,9 +413,7 @@ exports.updatePlaybook = async (req, res) => {
 
 exports.deletePlaybook = async (req, res) => {
   try {
-    const playbooks = await DataService.getPlaybooks();
-    const filtered = playbooks.filter(p => p.id !== req.params.id);
-    await DataService.savePlaybooks(filtered);
+    await DataService.deletePlaybook(req.params.id);
     res.redirect('/admin/playbooks');
   } catch (error) {
     console.error('Error deleting playbook:', error);
@@ -481,24 +438,19 @@ exports.newMasterclassPage = (req, res) => {
 
 exports.createMasterclass = async (req, res) => {
   try {
-    const { title, category, description, speaker, date, time, duration, price } = req.body;
-    const masterclasses = await DataService.getMasterclasses();
+    const { title, category, description, content, imageUrl } = req.body;
 
     const newMasterclass = {
-      id: `mc-${String(masterclasses.length + 1).padStart(3, '0')}`,
+      id: `mc-${Date.now()}`,
       title,
       category,
       description,
-      speaker,
-      date,
-      time,
-      duration,
-      price,
-      createdAt: new Date().toISOString().split('T')[0],
+      content,
+      imageUrl,
+      clicks: 0,
     };
 
-    masterclasses.push(newMasterclass);
-    await DataService.saveMasterclasses(masterclasses);
+    await DataService.createMasterclass(newMasterclass);
     res.redirect('/admin/masterclasses');
   } catch (error) {
     console.error('Error creating masterclass:', error);
@@ -508,8 +460,7 @@ exports.createMasterclass = async (req, res) => {
 
 exports.editMasterclassPage = async (req, res) => {
   try {
-    const masterclasses = await DataService.getMasterclasses();
-    const masterclass = masterclasses.find(m => m.id === req.params.id);
+    const masterclass = await DataService.getMasterclassById(req.params.id);
     if (!masterclass) {
       return res.status(404).send('Masterclass not found');
     }
@@ -522,24 +473,15 @@ exports.editMasterclassPage = async (req, res) => {
 
 exports.updateMasterclass = async (req, res) => {
   try {
-    const { title, category, description, speaker, date, time, duration, price } = req.body;
-    const masterclasses = await DataService.getMasterclasses();
-    const mcIndex = masterclasses.findIndex(m => m.id === req.params.id);
-    if (mcIndex === -1) {
-      return res.status(404).send('Masterclass not found');
-    }
-    masterclasses[mcIndex] = {
-      ...masterclasses[mcIndex],
+    const { title, category, description, content, imageUrl } = req.body;
+
+    await DataService.updateMasterclass(req.params.id, {
       title,
       category,
       description,
-      speaker,
-      date,
-      time,
-      duration,
-      price,
-    };
-    await DataService.saveMasterclasses(masterclasses);
+      content,
+      imageUrl,
+    });
     res.redirect('/admin/masterclasses');
   } catch (error) {
     console.error('Error updating masterclass:', error);
@@ -549,9 +491,7 @@ exports.updateMasterclass = async (req, res) => {
 
 exports.deleteMasterclass = async (req, res) => {
   try {
-    const masterclasses = await DataService.getMasterclasses();
-    const filtered = masterclasses.filter(m => m.id !== req.params.id);
-    await DataService.saveMasterclasses(filtered);
+    await DataService.deleteMasterclass(req.params.id);
     res.redirect('/admin/masterclasses');
   } catch (error) {
     console.error('Error deleting masterclass:', error);
@@ -576,20 +516,19 @@ exports.newMagazinePage = (req, res) => {
 
 exports.createMagazine = async (req, res) => {
   try {
-    const { title, category, description, coverImage } = req.body;
-    const magazines = await DataService.getMagazines();
+    const { title, category, description, content, coverImage } = req.body;
 
     const newMagazine = {
-      id: `mag-${String(magazines.length + 1).padStart(3, '0')}`,
+      id: `mag-${Date.now()}`,
       title,
       category,
       description,
+      content,
       coverImage,
-      createdAt: new Date().toISOString().split('T')[0],
+      clicks: 0,
     };
 
-    magazines.push(newMagazine);
-    await DataService.saveMagazines(magazines);
+    await DataService.createMagazine(newMagazine);
     res.redirect('/admin/magazines');
   } catch (error) {
     console.error('Error creating magazine:', error);
@@ -599,8 +538,7 @@ exports.createMagazine = async (req, res) => {
 
 exports.editMagazinePage = async (req, res) => {
   try {
-    const magazines = await DataService.getMagazines();
-    const magazine = magazines.find(m => m.id === req.params.id);
+    const magazine = await DataService.getMagazineById(req.params.id);
     if (!magazine) {
       return res.status(404).send('Magazine not found');
     }
@@ -613,20 +551,15 @@ exports.editMagazinePage = async (req, res) => {
 
 exports.updateMagazine = async (req, res) => {
   try {
-    const { title, category, description, coverImage } = req.body;
-    const magazines = await DataService.getMagazines();
-    const magIndex = magazines.findIndex(m => m.id === req.params.id);
-    if (magIndex === -1) {
-      return res.status(404).send('Magazine not found');
-    }
-    magazines[magIndex] = {
-      ...magazines[magIndex],
+    const { title, category, description, content, coverImage } = req.body;
+
+    await DataService.updateMagazine(req.params.id, {
       title,
       category,
       description,
+      content,
       coverImage,
-    };
-    await DataService.saveMagazines(magazines);
+    });
     res.redirect('/admin/magazines');
   } catch (error) {
     console.error('Error updating magazine:', error);
@@ -636,9 +569,7 @@ exports.updateMagazine = async (req, res) => {
 
 exports.deleteMagazine = async (req, res) => {
   try {
-    const magazines = await DataService.getMagazines();
-    const filtered = magazines.filter(m => m.id !== req.params.id);
-    await DataService.saveMagazines(filtered);
+    await DataService.deleteMagazine(req.params.id);
     res.redirect('/admin/magazines');
   } catch (error) {
     console.error('Error deleting magazine:', error);

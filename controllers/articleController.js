@@ -1,9 +1,9 @@
 const DataService = require('../services/DataService');
 const FilterService = require('../services/FilterService');
 
-exports.getArticles = (req, res) => {
+exports.getArticles = async (req, res) => {
   try {
-    const articles = DataService.getArticles();
+    const articles = await DataService.getArticles();
     const options = {
       category: req.query.category,
       subcategory: req.query.subcategory,
@@ -21,9 +21,9 @@ exports.getArticles = (req, res) => {
   }
 };
 
-exports.getArticleById = (req, res) => {
+exports.getArticleById = async (req, res) => {
   try {
-    const articles = DataService.getArticles();
+    const articles = await DataService.getArticles();
     const article = articles.find((a) => a.id === req.params.id);
 
     if (!article) {
@@ -36,10 +36,10 @@ exports.getArticleById = (req, res) => {
   }
 };
 
-exports.recordClick = (req, res) => {
+exports.recordClick = async (req, res) => {
   try {
     const { id } = req.params;
-    const articles = DataService.getArticles();
+    const articles = await DataService.getArticles();
     const article = articles.find((a) => a.id === id);
 
     if (!article) {
@@ -59,9 +59,9 @@ exports.recordClick = (req, res) => {
   }
 };
 
-exports.getCategories = (req, res) => {
+exports.getCategories = async (req, res) => {
   try {
-    const articles = DataService.getArticles();
+    const articles = await DataService.getArticles();
     const categories = {};
 
     articles.forEach((article) => {

@@ -1,9 +1,9 @@
 const DataService = require('../services/DataService');
 const FilterService = require('../services/FilterService');
 
-exports.getPlaybooks = (req, res) => {
+exports.getPlaybooks = async (req, res) => {
   try {
-    const playbooks = DataService.getPlaybooks();
+    const playbooks = await DataService.getPlaybooks();
     const options = {
       category: req.query.category,
       subcategory: req.query.subcategory,
@@ -21,9 +21,9 @@ exports.getPlaybooks = (req, res) => {
   }
 };
 
-exports.getPlaybookById = (req, res) => {
+exports.getPlaybookById = async (req, res) => {
   try {
-    const playbooks = DataService.getPlaybooks();
+    const playbooks = await DataService.getPlaybooks();
     const playbook = playbooks.find((p) => p.id === req.params.id);
 
     if (!playbook) {
@@ -36,10 +36,10 @@ exports.getPlaybookById = (req, res) => {
   }
 };
 
-exports.recordDownload = (req, res) => {
+exports.recordDownload = async (req, res) => {
   try {
     const { id } = req.params;
-    const playbooks = DataService.getPlaybooks();
+    const playbooks = await DataService.getPlaybooks();
     const playbook = playbooks.find((p) => p.id === id);
 
     if (!playbook) {
@@ -59,9 +59,9 @@ exports.recordDownload = (req, res) => {
   }
 };
 
-exports.getCategories = (req, res) => {
+exports.getCategories = async (req, res) => {
   try {
-    const playbooks = DataService.getPlaybooks();
+    const playbooks = await DataService.getPlaybooks();
     const categories = {};
 
     playbooks.forEach((pb) => {
