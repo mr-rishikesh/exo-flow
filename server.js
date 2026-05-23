@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const LeadService = require('./services/LeadService');
 require('dotenv').config();
 
 const app = express();
@@ -30,6 +31,11 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/cxo-techbot
 })
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.log('❌ MongoDB connection error:', err.message));
+
+// Initialize leads storage
+LeadService.initializeLeads()
+  .then(() => console.log('✅ Leads storage initialized'))
+  .catch(err => console.error('❌ Failed to initialize leads:', err.message));
 
 app.use('/articles', require('./routes/articles'));
 app.use('/events', require('./routes/events'));

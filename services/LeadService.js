@@ -9,8 +9,29 @@ const LEADS_INDEX_FILE = path.join(LEADS_DIR, 'index.json');
 async function ensureLeadsDir() {
   try {
     await fs.mkdir(LEADS_DIR, { recursive: true });
+    // Create index.json if it doesn't exist
+    try {
+      await fs.access(LEADS_INDEX_FILE);
+    } catch (error) {
+      // File doesn't exist, create empty array
+      await fs.writeFile(LEADS_INDEX_FILE, JSON.stringify([], null, 2), 'utf-8');
+    }
   } catch (error) {
     console.error('Error creating leads directory:', error);
+    throw new Error('Failed to initialize leads storage');
+  }
+}
+
+// Initialize leads storage on startup
+async function initializeLeads() {
+  try {
+    await ensureLeadsDir();
+    const leads = await getAllLeads();
+    console.log(`✅ Leads service initialized. Currently ${leads.length} leads stored.`);
+    return true;
+  } catch (error) {
+    console.error('❌ Failed to initialize leads service:', error.message);
+    throw error;
   }
 }
 
@@ -23,7 +44,8 @@ async function getAllLeads() {
       const data = await fs.readFile(LEADS_INDEX_FILE, 'utf-8');
       return JSON.parse(data);
     } catch (error) {
-      // File doesn't exist yet
+      // File doesn't exist yet, return empty array
+      console.warn('Leads file not found, returning empty array');
       return [];
     }
   } catch (error) {
