@@ -22,7 +22,11 @@ class DataService {
 
   async getArticleById(id) {
     try {
-      const article = await Article.findById(id);
+      // First try by MongoDB _id, then by custom id field
+      let article = await Article.findById(id);
+      if (!article) {
+        article = await Article.findOne({ id });
+      }
       return article ? article.toObject() : null;
     } catch (error) {
       console.error('Error fetching article:', error.message);
@@ -43,7 +47,11 @@ class DataService {
 
   async updateArticle(id, updateData) {
     try {
-      const article = await Article.findByIdAndUpdate(id, updateData, { new: true });
+      // First try by MongoDB _id, then by custom id field
+      let article = await Article.findByIdAndUpdate(id, updateData, { new: true });
+      if (!article) {
+        article = await Article.findOneAndUpdate({ id }, updateData, { new: true });
+      }
       return article ? article.toObject() : null;
     } catch (error) {
       console.error('Error updating article:', error.message);
@@ -53,7 +61,11 @@ class DataService {
 
   async deleteArticle(id) {
     try {
-      await Article.findByIdAndDelete(id);
+      // First try by MongoDB _id, then by custom id field
+      let result = await Article.findByIdAndDelete(id);
+      if (!result) {
+        result = await Article.findOneAndDelete({ id });
+      }
       return true;
     } catch (error) {
       console.error('Error deleting article:', error.message);
@@ -84,7 +96,10 @@ class DataService {
 
   async getEventById(id) {
     try {
-      const event = await Event.findById(id);
+      let event = await Event.findById(id);
+      if (!event) {
+        event = await Event.findOne({ id });
+      }
       return event ? event.toObject() : null;
     } catch (error) {
       console.error('Error fetching event:', error.message);
@@ -105,7 +120,10 @@ class DataService {
 
   async updateEvent(id, updateData) {
     try {
-      const event = await Event.findByIdAndUpdate(id, updateData, { new: true });
+      let event = await Event.findByIdAndUpdate(id, updateData, { new: true });
+      if (!event) {
+        event = await Event.findOneAndUpdate({ id }, updateData, { new: true });
+      }
       return event ? event.toObject() : null;
     } catch (error) {
       console.error('Error updating event:', error.message);
@@ -115,7 +133,10 @@ class DataService {
 
   async deleteEvent(id) {
     try {
-      await Event.findByIdAndDelete(id);
+      let result = await Event.findByIdAndDelete(id);
+      if (!result) {
+        result = await Event.findOneAndDelete({ id });
+      }
       return true;
     } catch (error) {
       console.error('Error deleting event:', error.message);
@@ -146,7 +167,10 @@ class DataService {
 
   async getPlaybookById(id) {
     try {
-      const playbook = await Playbook.findById(id);
+      let playbook = await Playbook.findById(id);
+      if (!playbook) {
+        playbook = await Playbook.findOne({ id });
+      }
       return playbook ? playbook.toObject() : null;
     } catch (error) {
       console.error('Error fetching playbook:', error.message);
@@ -167,7 +191,10 @@ class DataService {
 
   async updatePlaybook(id, updateData) {
     try {
-      const playbook = await Playbook.findByIdAndUpdate(id, updateData, { new: true });
+      let playbook = await Playbook.findByIdAndUpdate(id, updateData, { new: true });
+      if (!playbook) {
+        playbook = await Playbook.findOneAndUpdate({ id }, updateData, { new: true });
+      }
       return playbook ? playbook.toObject() : null;
     } catch (error) {
       console.error('Error updating playbook:', error.message);
@@ -177,7 +204,10 @@ class DataService {
 
   async deletePlaybook(id) {
     try {
-      await Playbook.findByIdAndDelete(id);
+      let result = await Playbook.findByIdAndDelete(id);
+      if (!result) {
+        result = await Playbook.findOneAndDelete({ id });
+      }
       return true;
     } catch (error) {
       console.error('Error deleting playbook:', error.message);
@@ -208,7 +238,10 @@ class DataService {
 
   async getMagazineById(id) {
     try {
-      const magazine = await Magazine.findById(id);
+      let magazine = await Magazine.findById(id);
+      if (!magazine) {
+        magazine = await Magazine.findOne({ id });
+      }
       return magazine ? magazine.toObject() : null;
     } catch (error) {
       console.error('Error fetching magazine:', error.message);
@@ -229,7 +262,10 @@ class DataService {
 
   async updateMagazine(id, updateData) {
     try {
-      const magazine = await Magazine.findByIdAndUpdate(id, updateData, { new: true });
+      let magazine = await Magazine.findByIdAndUpdate(id, updateData, { new: true });
+      if (!magazine) {
+        magazine = await Magazine.findOneAndUpdate({ id }, updateData, { new: true });
+      }
       return magazine ? magazine.toObject() : null;
     } catch (error) {
       console.error('Error updating magazine:', error.message);
@@ -239,7 +275,10 @@ class DataService {
 
   async deleteMagazine(id) {
     try {
-      await Magazine.findByIdAndDelete(id);
+      let result = await Magazine.findByIdAndDelete(id);
+      if (!result) {
+        result = await Magazine.findOneAndDelete({ id });
+      }
       return true;
     } catch (error) {
       console.error('Error deleting magazine:', error.message);
@@ -270,7 +309,10 @@ class DataService {
 
   async getMasterclassById(id) {
     try {
-      const masterclass = await Masterclass.findById(id);
+      let masterclass = await Masterclass.findById(id);
+      if (!masterclass) {
+        masterclass = await Masterclass.findOne({ id });
+      }
       return masterclass ? masterclass.toObject() : null;
     } catch (error) {
       console.error('Error fetching masterclass:', error.message);
@@ -291,7 +333,10 @@ class DataService {
 
   async updateMasterclass(id, updateData) {
     try {
-      const masterclass = await Masterclass.findByIdAndUpdate(id, updateData, { new: true });
+      let masterclass = await Masterclass.findByIdAndUpdate(id, updateData, { new: true });
+      if (!masterclass) {
+        masterclass = await Masterclass.findOneAndUpdate({ id }, updateData, { new: true });
+      }
       return masterclass ? masterclass.toObject() : null;
     } catch (error) {
       console.error('Error updating masterclass:', error.message);
@@ -301,7 +346,10 @@ class DataService {
 
   async deleteMasterclass(id) {
     try {
-      await Masterclass.findByIdAndDelete(id);
+      let result = await Masterclass.findByIdAndDelete(id);
+      if (!result) {
+        result = await Masterclass.findOneAndDelete({ id });
+      }
       return true;
     } catch (error) {
       console.error('Error deleting masterclass:', error.message);
