@@ -391,6 +391,8 @@ async function exportLeadsAsExcel() {
 }
 
 module.exports = {
+  initializeLeads,
+  ensureLeadsDir,
   getAllLeads,
   saveAllLeads,
   addLead,
