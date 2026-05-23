@@ -7,11 +7,13 @@ const router = express.Router();
 router.get('/login', authMiddleware.requireGuest, adminController.login);
 router.post('/login', authMiddleware.requireGuest, adminController.handleLogin);
 router.get('/logout', adminController.logout);
+router.get('/dashboard', authMiddleware.requireAuth, adminController.dashboard);
 
 router.get('/leads', authMiddleware.requireAuth, adminController.leadsPage);
 router.get('/leads/edit/:id', authMiddleware.requireAuth, adminController.editLeadPage);
 router.post('/leads/update/:id', authMiddleware.requireAuth, adminController.updateLeadStatus);
 router.post('/leads/delete/:id', authMiddleware.requireAuth, adminController.deleteLead);
+router.post('/leads/toggle-review/:id', authMiddleware.requireAuth, adminController.toggleLeadReview);
 
 router.get('/articles', authMiddleware.requireAuth, adminController.articlesPage);
 router.get('/articles/new', authMiddleware.requireAuth, adminController.newArticlePage);

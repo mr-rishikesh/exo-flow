@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CXO TechBOT Admin Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
+    }
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #667eea;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .nav-links a, .nav-links button {
+      padding: 10px 16px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-links a:hover, .nav-links button:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    .nav-links a.logout {
+      background: #e74c3c;
+    }
+    .nav-links a.logout:hover {
+      background: #c0392b;
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    }
+    .nav-links a.active {
+      background: #764ba2;
+      box-shadow: 0 4px 12px rgba(118, 75, 162, 0.4);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .page-title {
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .category-section {
+      margin-bottom: 40px;
+    }
+    .category-header {
+      background: white;
+      padding: 20px 25px;
+      border-radius: 12px 12px 0 0;
+      border-left: 5px solid #667eea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .category-header h2 {
+      font-size: 20px;
+      color: #333;
+      margin: 0;
+    }
+    .category-count {
+      background: #f0f0f0;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+    }
+    .table-wrapper {
+      background: white;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: #f8f9fa;
+      color: #333;
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    tr:hover {
+      background: #f9f9f9;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .status-new {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .status-contacted {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+    .status-replied {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+    .status-closed {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    .type-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #e3f2fd;
+      color: #1976d2;
+      text-transform: capitalize;
+    }
+    .action-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .action-links a, .action-links button {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .action-links a.edit {
+      background: #2196f3;
+      color: white;
+    }
+    .action-links a.edit:hover {
+      background: #1976d2;
+      transform: translateY(-1px);
+    }
+    .action-links button.delete {
+      background: #f44336;
+      color: white;
+    }
+    .action-links button.delete:hover {
+      background: #d32f2f;
+      transform: translateY(-1px);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+    .empty-state p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    .file-link {
+      color: #2196f3;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .file-link:hover {
+      color: #1976d2;
+      text-decoration: underline;
+    }
+    .truncate {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .content-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s;
+      border-left: 4px solid #667eea;
+    }
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .content-card h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+      font-size: 16px;
+    }
+    .content-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    .content-card-actions a, .content-card-actions button {
+      flex: 1;
+      padding: 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .content-card-actions a.new-btn {
+      background: #4caf50;
+      color: white;
+      grid-column: 1 / -1;
+    }
+    .content-card-actions a.new-btn:hover {
+      background: #45a049;
+    }
+    .content-card-actions a.edit {
+      background: #2196f3;
+      color: white;
+    }
+    .content-card-actions a.edit:hover {
+      background: #1976d2;
+    }
+    .content-card-actions button.delete {
+      background: #f44336;
+      color: white;
+    }
+    .content-card-actions button.delete:hover {
+      background: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🚀 CXO TechBOT Admin</div>
+    <div class="nav-menu nav-links">
+      <a href="/admin/dashboard" class="active">📊 Dashboard</a>
+      <a href="/admin/leads">🔴 Leads</a>
+      <a href="/admin/articles">📝 Articles</a>
+      <a href="/admin/events">📅 Events</a>
+      <a href="/admin/playbooks">📖 Playbooks</a>
+      <a href="/admin/masterclasses">🎓 Masterclasses</a>
+      <a href="/admin/magazines">📑 Magazines</a>
+      <a href="/admin/logout" class="logout">🚪 Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1 class="page-title">📈 Welcome to Your Dashboard</h1>
+
+    <!-- Content Management Section -->
+    <div style="margin-bottom: 50px;">
+      <h2 style="color: white; margin-bottom: 20px;">📚 Content Management</h2>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>📝 Articles</h3>
+          <p style="color: #666; margin: 10px 0; font-size: 14px;">Manage blog posts and articles</p>
+          <div class="content-card-actions">
+            <a href="/admin/articles/new" class="new-btn">+ New Article</a>
+            <a href="/admin/articles" class="edit">View All</a>
+          </div>
+        </div>
+        <div class="content-card">
+          <h3>📅 Events</h3>
+          <p style="color: #666; margin: 10px 0; font-size: 14px;">Manage upcoming events</p>
+          <div class="content-card-actions">
+            <a href="/admin/events/new" class="new-btn">+ New Event</a>
+            <a href="/admin/events" class="edit">View All</a>
+          </div>
+        </div>
+        <div class="content-card">
+          <h3>📖 Playbooks</h3>
+          <p style="color: #666; margin: 10px 0; font-size: 14px;">Manage playbooks</p>
+          <div class="content-card-actions">
+            <a href="/admin/playbooks/new" class="new-btn">+ New Playbook</a>
+            <a href="/admin/playbooks" class="edit">View All</a>
+          </div>
+        </div>
+        <div class="content-card">
+          <h3>🎓 Masterclasses</h3>
+          <p style="color: #666; margin: 10px 0; font-size: 14px;">Manage masterclasses</p>
+          <div class="content-card-actions">
+            <a href="/admin/masterclasses/new" class="new-btn">+ New Masterclass</a>
+            <a href="/admin/masterclasses" class="edit">View All</a>
+          </div>
+        </div>
+        <div class="content-card">
+          <h3>📑 Magazines</h3>
+          <p style="color: #666; margin: 10px 0; font-size: 14px;">Manage magazines</p>
+          <div class="content-card-actions">
+            <a href="/admin/magazines/new" class="new-btn">+ New Magazine</a>
+            <a href="/admin/magazines" class="edit">View All</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

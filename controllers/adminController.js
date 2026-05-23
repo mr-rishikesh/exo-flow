@@ -19,7 +19,7 @@ exports.handleLogin = async (req, res) => {
 
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       req.session.adminId = 'admin';
-      return res.redirect('/admin/leads');
+      return res.redirect('/admin/dashboard');
     }
 
     res.render('admin/login', { error: 'Invalid credentials' });
@@ -27,6 +27,10 @@ exports.handleLogin = async (req, res) => {
     console.error('Login error:', error);
     res.render('admin/login', { error: 'Login failed' });
   }
+};
+
+exports.dashboard = (req, res) => {
+  res.render('admin/dashboard');
 };
 
 exports.logout = (req, res) => {
@@ -38,10 +42,54 @@ exports.logout = (req, res) => {
 exports.leadsPage = async (req, res) => {
   try {
     const leads = await Lead.find().sort({ createdAt: -1 });
-    res.render('admin/leads', { leads });
+
+    // Group leads by type
+    const leadsByCategory = {};
+    const stats = { new: 0, contacted: 0, replied: 0, closed: 0 };
+
+    leads.forEach(lead => {
+      // Add flag for new and unreviewed leads
+      lead.isNewAndUnreviewed = !lead.isReviewed;
+
+      // Organize by type - sort by isNewAndUnreviewed first, then by createdAt
+      if (!leadsByCategory[lead.type]) {
+        leadsByCategory[lead.type] = [];
+      }
+      leadsByCategory[lead.type].push(lead);
+
+      // Count by status
+      if (stats.hasOwnProperty(lead.status)) {
+        stats[lead.status]++;
+      }
+    });
+
+    // Sort each category: unreviewed leads first, then by creation date
+    Object.keys(leadsByCategory).forEach(category => {
+      leadsByCategory[category].sort((a, b) => {
+        // First sort by review status (unreviewed first)
+        if (a.isReviewed !== b.isReviewed) {
+          return a.isReviewed - b.isReviewed;
+        }
+        // Then sort by creation date (newest first)
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    });
+
+    res.render('admin/leads-dashboard', {
+      leads,
+      leadsByCategory,
+      totalLeads: leads.length,
+      stats
+    });
   } catch (error) {
     console.error('Error loading leads:', error);
-    res.status(500).render('admin/leads', { leads: [], error: error.message });
+    res.status(500).render('admin/leads-dashboard', {
+      leads: [],
+      leadsByCategory: {},
+      totalLeads: 0,
+      stats: {},
+      error: error.message
+    });
   }
 };
 
@@ -80,6 +128,23 @@ exports.deleteLead = async (req, res) => {
   } catch (error) {
     console.error('Error deleting lead:', error);
     res.status(500).send('Failed to delete lead');
+  }
+};
+
+exports.toggleLeadReview = async (req, res) => {
+  try {
+    const lead = await Lead.findById(req.params.id);
+    if (!lead) {
+      return res.status(404).json({ success: false, error: 'Lead not found' });
+    }
+
+    lead.isReviewed = !lead.isReviewed;
+    await lead.save();
+
+    res.json({ success: true, isReviewed: lead.isReviewed });
+  } catch (error) {
+    console.error('Error toggling lead review:', error);
+    res.status(500).json({ success: false, error: 'Failed to toggle review status' });
   }
 };
 

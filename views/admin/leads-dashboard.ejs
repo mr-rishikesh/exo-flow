@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leads Dashboard - CXO TechBOT Admin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
+    }
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #667eea;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      padding: 10px 16px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-links a:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+    }
+    .nav-links a.active {
+      background: #764ba2;
+    }
+    .nav-links a.logout {
+      background: #e74c3c;
+    }
+    .nav-links a.logout:hover {
+      background: #c0392b;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .page-title {
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    .category-section {
+      margin-bottom: 40px;
+    }
+    .category-header {
+      background: white;
+      padding: 20px 25px;
+      border-radius: 12px 12px 0 0;
+      border-left: 5px solid #667eea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .category-header h2 {
+      font-size: 20px;
+      color: #333;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .category-count {
+      background: #f0f0f0;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+    }
+    .table-wrapper {
+      background: white;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: #f8f9fa;
+      color: #333;
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    tr:hover {
+      background: #f9f9f9;
+    }
+    tr.new-lead {
+      background: #fffacd;
+      border-left: 4px solid #ffc107;
+    }
+    tr.new-lead:hover {
+      background: #fff8d3;
+    }
+    .new-badge {
+      display: inline-block;
+      background: #ffc107;
+      color: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .status-new {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .status-contacted {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+    .status-replied {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+    .status-closed {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    .checkbox-cell {
+      text-align: center;
+    }
+    .checkbox-cell input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .action-links {
+      display: flex;
+      gap: 8px;
+    }
+    .action-links a, .action-links button {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .action-links a.edit {
+      background: #2196f3;
+      color: white;
+    }
+    .action-links a.edit:hover {
+      background: #1976d2;
+    }
+    .action-links button.delete {
+      background: #f44336;
+      color: white;
+    }
+    .action-links button.delete:hover {
+      background: #d32f2f;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+    .file-link {
+      color: #2196f3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .file-link:hover {
+      text-decoration: underline;
+    }
+    .truncate {
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-left: 4px solid #667eea;
+    }
+    .stat-card h3 {
+      color: #666;
+      font-size: 14px;
+      margin: 0 0 10px 0;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #667eea;
+    }
+    .load-more-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    .load-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    .load-more-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .pagination-info {
+      text-align: center;
+      color: white;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .hidden-rows {
+      display: none;
+    }
+    .new-leads-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border-top: 4px solid #ff6b6b;
+    }
+    .new-leads-header {
+      margin-bottom: 25px;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 15px;
+    }
+    .new-leads-header h2 {
+      font-size: 22px;
+      color: #333;
+      margin: 0 0 5px 0;
+    }
+    .new-leads-subtitle {
+      font-size: 14px;
+      color: #999;
+      margin: 0;
+    }
+    .new-leads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .new-lead-card {
+      background: linear-gradient(135deg, #fff5f5 0%, #fffacd 100%);
+      border: 2px solid #ffc107;
+      border-radius: 10px;
+      padding: 18px;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+    .new-lead-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(255, 193, 7, 0.3);
+      border-color: #ff6b6b;
+    }
+    .lead-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    .lead-type-badge {
+      display: inline-block;
+      background: #ff6b6b;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .lead-time {
+      font-size: 12px;
+      color: #999;
+      white-space: nowrap;
+    }
+    .lead-card-body {
+      flex: 1;
+      margin-bottom: 15px;
+    }
+    .lead-card-body h3 {
+      font-size: 16px;
+      color: #333;
+      margin: 0 0 10px 0;
+      word-break: break-all;
+    }
+    .lead-card-body p {
+      font-size: 13px;
+      color: #666;
+      margin: 6px 0;
+      line-height: 1.4;
+    }
+    .lead-message {
+      background: rgba(255, 255, 255, 0.7);
+      padding: 8px;
+      border-radius: 4px;
+      font-style: italic;
+    }
+    .lead-card-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .seen-btn, .view-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .seen-btn {
+      background: #4caf50;
+      color: white;
+    }
+    .seen-btn:hover {
+      background: #45a049;
+      transform: translateY(-1px);
+    }
+    .seen-btn:active {
+      transform: translateY(0);
+    }
+    .view-btn {
+      background: #2196f3;
+      color: white;
+    }
+    .view-btn:hover {
+      background: #1976d2;
+      transform: translateY(-1px);
+    }
+    .fade-out {
+      animation: fadeOut 0.4s ease-out forwards;
+    }
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🚀 CXO TechBOT Admin</div>
+    <div class="nav-links">
+      <a href="/admin/dashboard">📊 Dashboard</a>
+      <a href="/admin/leads" class="active">🔴 Leads</a>
+      <a href="/admin/articles">📝 Articles</a>
+      <a href="/admin/events">📅 Events</a>
+      <a href="/admin/playbooks">📖 Playbooks</a>
+      <a href="/admin/masterclasses">🎓 Masterclasses</a>
+      <a href="/admin/magazines">📑 Magazines</a>
+      <a href="/admin/logout" class="logout">🚪 Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1 class="page-title">📊 Leads Management</h1>
+
+    <!-- New Leads Alert Section -->
+    <% const unreviewed = leads.filter(lead => !lead.isReviewed); %>
+    <% if (unreviewed.length > 0) { %>
+      <div class="new-leads-section">
+        <div class="new-leads-header">
+          <h2>🆕 New Leads (<%= unreviewed.length %>)</h2>
+          <p class="new-leads-subtitle">Click "Seen" to mark as reviewed</p>
+        </div>
+        <div class="new-leads-grid">
+          <% unreviewed.forEach(lead => { %>
+            <div class="new-lead-card" data-lead-id="<%= lead._id %>">
+              <div class="lead-card-header">
+                <div class="lead-type-badge">
+                  <%
+                    const categoryEmojis = {
+                      'event_collaboration': '🤝',
+                      'partnership': '🤝',
+                      'media_inquiry': '📢',
+                      'general_inquiry': '❓',
+                      'newsletter': '📧',
+                      'playbook_subscription': '📖',
+                      'get_featured': '⭐',
+                      'role_change_announcement': '🔄',
+                      'magazine_subscription': '📑',
+                      'masterclass_subscription': '🎓',
+                      'event_registration': '📅',
+                      'brand_collaboration': '🎨',
+                      'other': '📌'
+                    };
+                    const emoji = categoryEmojis[lead.type] || '📌';
+                  %>
+                  <%= emoji %> <%= lead.type.replace(/_/g, ' ') %>
+                </div>
+                <div class="lead-time">
+                  <%= new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+                </div>
+              </div>
+              <div class="lead-card-body">
+                <h3><%= lead.email %></h3>
+                <p><strong>Company:</strong> <%= lead.company || 'N/A' %></p>
+                <p><strong>Phone:</strong> <%= lead.phone || 'N/A' %></p>
+                <% if (lead.message) { %>
+                  <p class="lead-message"><strong>Message:</strong> <%= lead.message.substring(0, 100) %>...</p>
+                <% } %>
+              </div>
+              <div class="lead-card-actions">
+                <button class="seen-btn" onclick="markAsSeen('<%= lead._id %>', this)">✓ Seen</button>
+                <a href="/admin/leads/edit/<%= lead._id %>" class="view-btn">👁️ View</a>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>📭 Total Leads</h3>
+        <div class="stat-number"><%= totalLeads %></div>
+      </div>
+      <div class="stat-card">
+        <h3>🆕 New</h3>
+        <div class="stat-number"><%= stats.new || 0 %></div>
+      </div>
+      <div class="stat-card">
+        <h3>💬 Contacted</h3>
+        <div class="stat-number"><%= stats.contacted || 0 %></div>
+      </div>
+      <div class="stat-card">
+        <h3>✅ Replied</h3>
+        <div class="stat-number"><%= stats.replied || 0 %></div>
+      </div>
+    </div>
+
+    <!-- Category-wise Leads with Pagination -->
+    <% Object.keys(leadsByCategory).forEach(category => { %>
+      <% if (leadsByCategory[category].length > 0) { %>
+        <div class="category-section">
+          <div class="category-header">
+            <h2>
+              <%
+                const categoryEmojis = {
+                  'event_collaboration': '🤝',
+                  'partnership': '🤝',
+                  'media_inquiry': '📢',
+                  'general_inquiry': '❓',
+                  'newsletter': '📧',
+                  'playbook_subscription': '📖',
+                  'get_featured': '⭐',
+                  'role_change_announcement': '🔄',
+                  'magazine_subscription': '📑',
+                  'masterclass_subscription': '🎓',
+                  'event_registration': '📅',
+                  'brand_collaboration': '🎨',
+                  'other': '📌'
+                };
+                const emoji = categoryEmojis[category] || '📌';
+              %>
+              <%= emoji %> <%= category.replace(/_/g, ' ').toUpperCase() %>
+            </h2>
+            <span class="category-count"><%= leadsByCategory[category].length %> leads</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;">✓</th>
+                  <th>Email</th>
+                  <th>Company</th>
+                  <th>Phone</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="leads-tbody" data-category="<%= category %>">
+                <%
+                  const categoryLeads = leadsByCategory[category];
+                  const itemsPerPage = 5;
+
+                  categoryLeads.forEach((lead, index) => {
+                    const isNewAndUnreviewedClass = lead.isNewAndUnreviewed ? 'new-lead' : '';
+                    const rowClass = index >= itemsPerPage ? 'hidden-rows' : '';
+                %>
+                  <tr class="lead-row <%= isNewAndUnreviewedClass %> <%= rowClass %>" data-lead-id="<%= lead._id %>" data-index="<%= index %>">
+                    <td class="checkbox-cell">
+                      <input type="checkbox" class="review-checkbox" data-lead-id="<%= lead._id %>" <%= lead.isReviewed ? 'checked' : '' %>>
+                    </td>
+                    <td>
+                      <% if (lead.isNewAndUnreviewed) { %>
+                        <span class="new-badge">🆕 NEW</span>
+                      <% } %>
+                      <strong><%= lead.email %></strong>
+                    </td>
+                    <td><%= lead.company || '-' %></td>
+                    <td><%= lead.phone || '-' %></td>
+                    <td>
+                      <span class="truncate" title="<%= lead.message || '' %>">
+                        <%= lead.message ? lead.message.substring(0, 50) + (lead.message.length > 50 ? '...' : '') : '-' %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-<%= lead.status %>">
+                        <%= lead.status.toUpperCase() %>
+                      </span>
+                    </td>
+                    <td><small><%= new Date(lead.createdAt).toLocaleDateString() %></small></td>
+                    <td>
+                      <div class="action-links">
+                        <a href="/admin/leads/edit/<%= lead._id %>" class="edit">✏️ Edit</a>
+                        <form method="POST" action="/admin/leads/delete/<%= lead._id %>" style="display:inline;" onsubmit="return confirm('Delete this lead?');">
+                          <button type="submit" class="delete">🗑️ Delete</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+
+          <% if (leadsByCategory[category].length > 5) { %>
+            <button class="load-more-btn" data-category="<%= category %>" data-initial="5" onclick="loadMoreLeads(this, '<%= category %>')">
+              Load More (<%= leadsByCategory[category].length - 5 %> more)
+            </button>
+          <% } %>
+        </div>
+      <% } %>
+    <% }); %>
+
+    <% if (totalLeads === 0) { %>
+      <div class="table-wrapper">
+        <div class="empty-state">
+          <p style="font-size: 48px;">📭</p>
+          <p>No leads yet</p>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <script>
+    // Mark lead as seen
+    function markAsSeen(leadId, btn) {
+      const card = document.querySelector(`[data-lead-id="${leadId}"]`);
+
+      // Make AJAX call to mark as reviewed
+      fetch(`/admin/leads/toggle-review/${leadId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Add fade-out animation and remove from DOM
+          card.classList.add('fade-out');
+          setTimeout(() => {
+            card.remove();
+
+            // Check if there are any new leads left
+            const newLeadsSection = document.querySelector('.new-leads-section');
+            const remainingCards = newLeadsSection ? newLeadsSection.querySelectorAll('.new-lead-card').length : 0;
+
+            if (remainingCards === 0) {
+              // Remove the entire new leads section if no leads left
+              if (newLeadsSection) {
+                newLeadsSection.classList.add('fade-out');
+                setTimeout(() => {
+                  newLeadsSection.remove();
+                }, 400);
+              }
+            }
+          }, 400);
+        }
+      })
+      .catch(error => {
+        console.error('Error marking as seen:', error);
+        alert('Failed to mark as seen');
+      });
+    }
+
+    // Load More functionality
+    function loadMoreLeads(btn, category) {
+      const tbody = document.querySelector(`.leads-tbody[data-category="${category}"]`);
+      const hiddenRows = tbody.querySelectorAll('.hidden-rows');
+      let itemsToShow = 5;
+      let itemsShown = 0;
+
+      hiddenRows.forEach(row => {
+        if (itemsShown < itemsToShow) {
+          row.classList.remove('hidden-rows');
+          itemsShown++;
+        }
+      });
+
+      const remainingHidden = tbody.querySelectorAll('.hidden-rows').length;
+      if (remainingHidden === 0) {
+        btn.style.display = 'none';
+      } else {
+        btn.textContent = `Load More (${remainingHidden} more)`;
+      }
+    }
+
+    // Review checkbox functionality
+    document.querySelectorAll('.review-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const leadId = this.getAttribute('data-lead-id');
+        const leadRow = document.querySelector(`tr[data-lead-id="${leadId}"]`);
+
+        // Make AJAX call to toggle review status
+        fetch(`/admin/leads/toggle-review/${leadId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            if (data.isReviewed) {
+              // Remove the new badge styling
+              leadRow.classList.remove('new-lead');
+            } else {
+              // Add the new badge styling back
+              leadRow.classList.add('new-lead');
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error toggling review status:', error);
+          // Revert checkbox on error
+          this.checked = !this.checked;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
