@@ -16,6 +16,7 @@ router.post('/leads/delete/:id', authMiddleware.requireAuth, adminController.del
 router.post('/leads/toggle-review/:id', authMiddleware.requireAuth, adminController.toggleLeadReview);
 router.get('/leads/download/csv', authMiddleware.requireAuth, adminController.downloadLeadsCSV);
 router.get('/leads/download/json', authMiddleware.requireAuth, adminController.downloadLeadsJSON);
+router.get('/leads/download/excel', authMiddleware.requireAuth, adminController.downloadLeadsExcel);
 
 router.get('/articles', authMiddleware.requireAuth, adminController.articlesPage);
 router.get('/articles/new', authMiddleware.requireAuth, adminController.newArticlePage);

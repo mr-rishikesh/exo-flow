@@ -166,6 +166,22 @@ exports.downloadLeadsJSON = async (req, res) => {
   }
 };
 
+exports.downloadLeadsExcel = async (req, res) => {
+  try {
+    const workbook = await LeadService.exportLeadsAsExcel();
+    const timestamp = new Date().toISOString().split('T')[0];
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="leads-${timestamp}.xlsx"`);
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error('Error downloading leads Excel:', error);
+    res.status(500).send('Failed to download leads');
+  }
+};
+
 exports.articlesPage = async (req, res) => {
   try {
     const articles = await DataService.getArticles();
