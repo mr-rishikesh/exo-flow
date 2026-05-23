@@ -56,21 +56,35 @@ class DataService {
 
   async updateArticle(id, updateData) {
     try {
+      console.log('🔍 DataService.updateArticle called');
+      console.log('  ID:', id);
+      console.log('  Update data:', updateData);
+
       // First try by custom id field (for seeded data)
       let article = await Article.findOneAndUpdate({ id }, updateData, { new: true });
+      console.log('  Step 1 (findOne with custom id):', article ? 'FOUND' : 'NOT FOUND');
 
       // If not found, try by MongoDB _id
       if (!article) {
         try {
           article = await Article.findByIdAndUpdate(id, updateData, { new: true });
+          console.log('  Step 2 (findById with MongoDB _id):', article ? 'FOUND' : 'NOT FOUND');
         } catch (err) {
+          console.log('  Step 2 error (expected for non-ObjectId):', err.message);
           // Not a valid MongoDB ID format
         }
       }
 
+      if (article) {
+        console.log('✅ Article updated successfully');
+        console.log('  New title:', article.title);
+      } else {
+        console.log('⚠️ Article not found, update unsuccessful');
+      }
+
       return article ? article.toObject() : null;
     } catch (error) {
-      console.error('Error updating article:', error.message);
+      console.error('❌ Error updating article:', error.message);
       throw error;
     }
   }
@@ -153,21 +167,29 @@ class DataService {
 
   async updateEvent(id, updateData) {
     try {
+      console.log('🔍 DataService.updateEvent called');
+      console.log('  ID:', id);
+
       // First try by custom id field (for seeded data)
       let event = await Event.findOneAndUpdate({ id }, updateData, { new: true });
+      console.log('  Step 1 (findOne with custom id):', event ? 'FOUND' : 'NOT FOUND');
 
       // If not found, try by MongoDB _id
       if (!event) {
         try {
           event = await Event.findByIdAndUpdate(id, updateData, { new: true });
+          console.log('  Step 2 (findById with MongoDB _id):', event ? 'FOUND' : 'NOT FOUND');
         } catch (err) {
           // Not a valid MongoDB ID format
         }
       }
 
+      if (event) console.log('✅ Event updated successfully');
+      else console.log('⚠️ Event not found');
+
       return event ? event.toObject() : null;
     } catch (error) {
-      console.error('Error updating event:', error.message);
+      console.error('❌ Error updating event:', error.message);
       throw error;
     }
   }
@@ -250,21 +272,29 @@ class DataService {
 
   async updatePlaybook(id, updateData) {
     try {
+      console.log('🔍 DataService.updatePlaybook called');
+      console.log('  ID:', id);
+
       // First try by custom id field (for seeded data)
       let playbook = await Playbook.findOneAndUpdate({ id }, updateData, { new: true });
+      console.log('  Step 1 (findOne with custom id):', playbook ? 'FOUND' : 'NOT FOUND');
 
       // If not found, try by MongoDB _id
       if (!playbook) {
         try {
           playbook = await Playbook.findByIdAndUpdate(id, updateData, { new: true });
+          console.log('  Step 2 (findById with MongoDB _id):', playbook ? 'FOUND' : 'NOT FOUND');
         } catch (err) {
           // Not a valid MongoDB ID format
         }
       }
 
+      if (playbook) console.log('✅ Playbook updated successfully');
+      else console.log('⚠️ Playbook not found');
+
       return playbook ? playbook.toObject() : null;
     } catch (error) {
-      console.error('Error updating playbook:', error.message);
+      console.error('❌ Error updating playbook:', error.message);
       throw error;
     }
   }
@@ -347,21 +377,35 @@ class DataService {
 
   async updateMagazine(id, updateData) {
     try {
+      console.log('🔍 DataService.updateMagazine called');
+      console.log('  ID:', id);
+      console.log('  Update data:', updateData);
+
       // First try by custom id field (for seeded data)
       let magazine = await Magazine.findOneAndUpdate({ id }, updateData, { new: true });
+      console.log('  Step 1 (findOne with custom id):', magazine ? 'FOUND' : 'NOT FOUND');
 
       // If not found, try by MongoDB _id
       if (!magazine) {
         try {
           magazine = await Magazine.findByIdAndUpdate(id, updateData, { new: true });
+          console.log('  Step 2 (findById with MongoDB _id):', magazine ? 'FOUND' : 'NOT FOUND');
         } catch (err) {
+          console.log('  Step 2 error (expected for non-ObjectId):', err.message);
           // Not a valid MongoDB ID format
         }
       }
 
+      if (magazine) {
+        console.log('✅ Magazine updated successfully');
+        console.log('  New title:', magazine.title);
+      } else {
+        console.log('⚠️ Magazine not found, update unsuccessful');
+      }
+
       return magazine ? magazine.toObject() : null;
     } catch (error) {
-      console.error('Error updating magazine:', error.message);
+      console.error('❌ Error updating magazine:', error.message);
       throw error;
     }
   }
@@ -444,21 +488,29 @@ class DataService {
 
   async updateMasterclass(id, updateData) {
     try {
+      console.log('🔍 DataService.updateMasterclass called');
+      console.log('  ID:', id);
+
       // First try by custom id field (for seeded data)
       let masterclass = await Masterclass.findOneAndUpdate({ id }, updateData, { new: true });
+      console.log('  Step 1 (findOne with custom id):', masterclass ? 'FOUND' : 'NOT FOUND');
 
       // If not found, try by MongoDB _id
       if (!masterclass) {
         try {
           masterclass = await Masterclass.findByIdAndUpdate(id, updateData, { new: true });
+          console.log('  Step 2 (findById with MongoDB _id):', masterclass ? 'FOUND' : 'NOT FOUND');
         } catch (err) {
           // Not a valid MongoDB ID format
         }
       }
 
+      if (masterclass) console.log('✅ Masterclass updated successfully');
+      else console.log('⚠️ Masterclass not found');
+
       return masterclass ? masterclass.toObject() : null;
     } catch (error) {
-      console.error('Error updating masterclass:', error.message);
+      console.error('❌ Error updating masterclass:', error.message);
       throw error;
     }
   }

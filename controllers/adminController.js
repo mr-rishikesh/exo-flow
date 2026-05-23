@@ -237,8 +237,12 @@ exports.editArticlePage = async (req, res) => {
 exports.updateArticle = async (req, res) => {
   try {
     const { title, category, subcategory, description, content, imageUrl } = req.body;
+    const articleId = req.params.id;
 
-    await DataService.updateArticle(req.params.id, {
+    console.log('🔄 Updating article:', articleId);
+    console.log('📝 Update data:', { title, category, subcategory, description });
+
+    const result = await DataService.updateArticle(articleId, {
       title,
       category,
       subcategory: subcategory || 'general',
@@ -246,10 +250,13 @@ exports.updateArticle = async (req, res) => {
       content,
       imageUrl,
     });
+
+    console.log('✅ Article updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+
     res.redirect('/admin/articles');
   } catch (error) {
-    console.error('Error updating article:', error);
-    res.status(500).send('Failed to update article');
+    console.error('❌ Error updating article:', error.message);
+    res.status(500).send('Failed to update article: ' + error.message);
   }
 };
 
@@ -552,18 +559,27 @@ exports.editMagazinePage = async (req, res) => {
 exports.updateMagazine = async (req, res) => {
   try {
     const { title, category, description, content, coverImage } = req.body;
+    const magazineId = req.params.id;
 
-    await DataService.updateMagazine(req.params.id, {
+    console.log('🔄 Updating magazine:', magazineId);
+    console.log('📝 Update data:', { title, category, description, coverImage });
+
+    const result = await DataService.updateMagazine(magazineId, {
       title,
       category,
       description,
       content,
       coverImage,
     });
+
+    console.log('✅ Magazine updated:', result ? 'SUCCESS' : 'RETURNED NULL');
+    console.log('Result:', result);
+
     res.redirect('/admin/magazines');
   } catch (error) {
-    console.error('Error updating magazine:', error);
-    res.status(500).send('Failed to update magazine');
+    console.error('❌ Error updating magazine:', error.message);
+    console.error('Stack:', error.stack);
+    res.status(500).send('Failed to update magazine: ' + error.message);
   }
 };
 
